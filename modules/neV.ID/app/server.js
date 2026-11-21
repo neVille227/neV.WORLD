@@ -124,7 +124,7 @@ async function serveStatic(request, response, pathname) {
   }
 
   const requestedPath = decodedPath === "/" ? "/index.html" : decodedPath;
-  const filePath = path.resolve(buildDirectory, `. ${requestedPath}`.replace(". ", "."));
+  const filePath = path.resolve(buildDirectory, `.${requestedPath}`);
 
   if (filePath !== buildDirectory && !filePath.startsWith(buildDirectory + path.sep)) {
     sendJson(response, 403, { error: "FORBIDDEN" });
