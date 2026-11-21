@@ -181,7 +181,7 @@ async function verifyServerSession(clerk) {
     }
 
     const response = await fetch("/api/me", {
-      method: "GET",
+      method: "POST",
       credentials: "same-origin",
       headers: {
         Accept: "application/json",
