@@ -1,51 +1,51 @@
 # neV.ID — Module interne de neV.WORLD
 
-**Statut :** conception — non implémenté  
-**Nature :** module transversal, pas un projet indépendant  
-**Fournisseur d'identité envisagé :** Clerk
+**Statut :** première base technique créée — configuration Clerk et tests réels à effectuer  
+**Nature :** module transversal intégré au dépôt principal  
+**Fournisseur d'identité retenu :** Clerk
 
 ## Mission
 
-neV.ID fournit une identité de connexion commune aux applications de neV.WORLD. Un membre doit pouvoir utiliser le même compte dans les applications raccordées, sous réserve des droits accordés par chacune.
+neV.ID fournit une identité de connexion commune aux applications de neV.WORLD. Un membre pourra utiliser le même compte dans les applications raccordées, sous réserve des droits accordés par chacune.
 
-## Ce que le module comprend
+## Architecture du module
 
-### Frontend
-- Interface de connexion et d'inscription.
-- Profil et paramètres de compte.
-- Gestion de l'état de connexion et redirections contrôlées.
+- **Frontend :** connexion, inscription, profil et paramètres de compte.
+- **Backend :** vérification côté serveur des sessions Clerk et identification stable du membre.
+- **Fournisseur :** Clerk, à configurer dans une instance de développement.
+- **Application :** `app/`, construite avec Vite, JavaScript natif et un serveur HTTP Node.js.
+- **Dépôt :** ce module reste dans `neV.WORLD`, il ne constitue pas un dépôt ou projet indépendant.
 
-### Backend / vérification
-- Vérification serveur des sessions ou jetons.
-- Identification stable du membre.
-- Contrôle des autorisations et des rôles.
-- Traitement sécurisé des opérations de compte.
+## Fichiers
 
-Le portail neV.WORLD actuel est statique. L'interface de neV.ID et sa logique serveur seront donc développées comme composants distincts du portail public, tout en restant dans l'écosystème et le dépôt principal.
+- `app/src/main.js` — initialisation Clerk, navigation et composants.
+- `app/src/style.css` — interface responsive, thème sombre et accent rouge.
+- `app/server.js` — service HTTP Node et endpoint protégé `GET /api/me`.
+- `app/vite.config.js` — proxy local du frontend vers le backend.
+- `app/.env.example` — variables nécessaires, sans véritables secrets.
+- `app/README.md` — installation et lancement local.
 
 ## Relation avec les applications
 
 - neV.WORLD : portail central et point d'entrée.
-- neV.BOOSTER, neV.MANGA, neV.NEXUS et NEHODO.22 : applications raccordées progressivement.
-- Chaque application garde ses propres données métier et ses règles d'accès.
-- neV.ID ne donne pas automatiquement accès à toutes les fonctionnalités : chaque application conserve ses autorisations.
+- neV.BOOSTER, neV.MANGA, neV.NEXUS et NEHODO.22 : applications à raccorder progressivement.
+- Chaque application conserve ses données métier et ses règles d'accès.
+- La création d'un compte commun ne donne pas automatiquement tous les droits sur chaque application.
 
-## Décisions de conception
+## État réel
 
-- Clerk est le fournisseur retenu pour les essais, pas encore configuré.
-- Le futur hôte de compte envisagé est `accounts.nev.world`.
-- Le domaine personnalisé n'est pas encore acquis.
-- La première intégration pilote sera neV.BOOSTER, après sauvegarde et préparation d'une migration progressive.
-- Les identifiants internes existants des applications ne seront pas remplacés sans plan de migration vérifié.
+- L'interface et les points d'entrée de connexion, inscription et profil sont codés.
+- Le backend vérifie les sessions avec `authenticateRequest()` et une liste d'origines autorisées.
+- L'application affiche une page de configuration tant que la clé publique Clerk n'est pas fournie.
+- Aucun compte Clerk n'a été créé ou configuré.
+- Aucune clé réelle n'est enregistrée dans Git.
+- La compilation, la connexion réelle, le test du profil et la propagation de session entre applications restent à vérifier.
+- Aucun déploiement Render n'a été effectué.
 
-## Prochaines étapes
+## Lancement local
 
-1. Valider cette structure.
-2. Concevoir les écrans frontend et le flux de connexion.
-3. Préparer un environnement Clerk de développement.
-4. Définir et tester la vérification serveur.
-5. Raccorder une application pilote sans interrompre son système actuel.
+Voir [app/README.md](app/README.md).
 
 ## Sécurité
 
-Ne jamais committer de clés Clerk, secrets, jetons ou données personnelles. Les secrets seront configurés dans les variables d'environnement de l'hébergement. Toute migration doit être précédée d'une sauvegarde et d'un test de restauration.
+Ne jamais committer de clé secrète Clerk, jeton ou donnée personnelle. Les clés secrètes restent exclusivement côté serveur et dans les variables d'environnement de l'hébergement. Toute migration de comptes existants doit commencer par une sauvegarde vérifiée et un plan de liaison sécurisé.
