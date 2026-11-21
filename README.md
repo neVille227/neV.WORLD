@@ -9,31 +9,33 @@ Portail central de l’écosystème neV.
 - **neV.NEXUS** — mise en relation et création d’opportunités (pilote privé, accès restreint).
 - **NEHODO.22** — architecture et conception.
 
-## Structure actuelle
+## Architecture
 
-Le portail est une application statique composée de :
+neV.WORLD est l’écosystème principal. **neV.ID est un module interne** chargé de l’identité et de l’authentification communes ; ce n’est pas un projet indépendant.
 
-- `index.html` — structure et contenu.
+- `index.html` — portail public.
 - `style.css` — identité visuelle et mise en page responsive.
 - `script.js` — navigation mobile et mise à jour de l’année.
+- `modules/neV.ID/` — documentation et conception du module d’identité.
 
-Les applications restent indépendantes. Les services partagés (compte neV, profil et API) seront ajoutés dans une phase ultérieure.
+Les applications restent autonomes pour leurs fonctionnalités et leurs données métier. Le partage d’identité sera ajouté progressivement, après validation de l’architecture et des migrations.
 
 ## Documentation
 
-- [Architecture cible et stratégie de compte unique](ARCHITECTURE.md)
+- [Architecture globale](ARCHITECTURE.md)
+- [Module neV.ID](modules/neV.ID/README.md)
 
-## Déploiement sur Render
+## Déploiement actuel sur Render
 
-Créer un service **Static Site** relié à ce dépôt :
+Le portail est un **Static Site** :
 
 - Branch : `main`
 - Root Directory : laisser vide
 - Build Command : laisser vide
 - Publish Directory : `.`
 
-Le portail ne nécessite aucune compilation.
+Le portail ne nécessite actuellement aucune compilation. Ne pas modifier ces paramètres pour la simple présence de la documentation neV.ID.
 
 ## État du projet
 
-Portail V1 en ligne. L’authentification commune et les sous-domaines personnalisés ne sont pas encore configurés. Voir [ARCHITECTURE.md](ARCHITECTURE.md) pour les prérequis et l’ordre de migration.
+Le portail public existe déjà. Le module neV.ID est en phase de conception : aucun fournisseur d’identité n’est encore configuré dans le dépôt, aucun compte commun n’est actif et aucune application n’a été migrée.
