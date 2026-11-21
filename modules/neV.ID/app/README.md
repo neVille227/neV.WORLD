@@ -6,9 +6,20 @@ Cette application constitue le premier socle frontend + backend du module neV.ID
 
 - Node.js 22.13 ou version ultérieure.
 - npm.
-- Une instance Clerk de développement pour tester réellement l'authentification.
+- Une instance Clerk de développement.
 
-## Installation locale
+## 1. Créer l'application Clerk de développement
+
+1. Ouvrir le [tableau de bord Clerk](https://dashboard.clerk.com/).
+2. Se connecter ou créer un compte fournisseur avec l'aide d'un adulte responsable pour la gestion du compte et des éventuelles obligations de paiement.
+3. Créer une application nommée **neV.WORLD**.
+4. Conserver l'instance **Development** pour ces essais.
+5. Pour le premier essai, activer l'adresse e-mail avec code de vérification. Les fournisseurs sociaux pourront être ajoutés plus tard.
+6. Dans **API keys**, récupérer la clé publique et la clé secrète de l'instance Development.
+
+La création de l'application Clerk se fait dans le compte du propriétaire : ne partage jamais ton mot de passe ni ta clé secrète dans une conversation.
+
+## 2. Installer localement
 
 Depuis ce dossier :
 
@@ -28,17 +39,23 @@ Sous Windows PowerShell :
 Copy-Item .env.example .env
 ```
 
-Renseigner ensuite les variables dans le fichier local `.env` :
+Renseigner les variables dans le fichier local `.env` :
 
-- `VITE_CLERK_PUBLISHABLE_KEY` : clé publique Clerk.
-- `CLERK_SECRET_KEY` : clé secrète Clerk, utilisée uniquement par le serveur Node.
+- `VITE_CLERK_PUBLISHABLE_KEY` : clé publique Development.
+- `CLERK_SECRET_KEY` : clé secrète Development, exclusivement côté serveur.
 - `NEV_ID_AUTHORIZED_PARTIES` : liste séparée par des virgules des origines exactes autorisées.
 
-Ne jamais transmettre la clé secrète dans une conversation, la placer dans le code frontend ou la committer sur GitHub. Le fichier `.env` est ignoré par Git.
+Exemple d'origine locale :
 
-## Démarrage en développement
+```text
+NEV_ID_AUTHORIZED_PARTIES=http://localhost:5173
+```
 
-Ouvrir deux terminaux dans ce dossier.
+Ne jamais publier le fichier `.env`, la clé secrète, un jeton ou des données personnelles. Le fichier `.env` est ignoré par Git. Les clés ne doivent pas être ajoutées à GitHub ni envoyées ici.
+
+## 3. Démarrer en développement
+
+Ouvrir deux terminaux dans le dossier `modules/neV.ID/app`.
 
 Terminal 1 — backend :
 
@@ -52,44 +69,41 @@ Terminal 2 — frontend :
 npm run dev
 ```
 
-Ouvrir ensuite l'adresse locale affichée par Vite, généralement `http://localhost:5173`.
+Ouvrir ensuite l'adresse Vite affichée dans le terminal, généralement `http://localhost:5173`.
 
 Le proxy Vite transmet les appels `/api` au serveur Node local sur le port 3000.
 
-## Routes disponibles
-
-- `/sign-in` — connexion.
-- `/sign-up` — inscription.
-- `/profile` — gestion du profil, réservée à une session connectée.
-- `/api/health` — état du serveur.
-- `/api/me` — vérification de la session côté serveur avec Clerk.
-
-Le endpoint `/api/me` ne renvoie que l'identifiant Clerk et l'identifiant de session vérifiés. Il ne renvoie pas de clé ni de donnée sensible de compte.
-
-## Compilation et exécution de production
+## 4. Vérifications
 
 ```bash
+npm run check
 npm run build
-npm start
 ```
 
-Le serveur Node sert le dossier `dist` et traite les routes API. Render devra utiliser, lors d'un futur déploiement :
+Puis tester dans le navigateur :
 
-- Root Directory : `modules/neV.ID/app`
-- Build Command : `npm install && npm run build`
-- Start Command : `npm start`
+- `/sign-up` — création d'un compte de test.
+- `/sign-in` — connexion.
+- `/profile` — profil et paramètres du compte.
+- Déconnexion depuis la barre supérieure du profil.
+- `/api/health` — état du serveur.
+- `/api/me` — vérification du jeton par le backend après connexion.
 
-Il s'agira d'un nouveau service Render interne à l'écosystème neV.WORLD, sans remplacer le Static Site du portail principal.
+Le navigateur récupère le jeton à partir de la session Clerk et le transmet au backend dans l'en-tête `Authorization: Bearer`. Le backend le vérifie avec `authenticateRequest()` et la liste `authorizedParties`.
 
-## Configuration de production non effectuée
+## 5. Déploiement ultérieur sur Render
 
-Avant le déploiement, il faudra :
+Après compilation et tests locaux, un nouveau service Render pourra être créé sans remplacer le portail principal :
 
-1. Acquérir et configurer le domaine neV.WORLD.
-2. Créer l'instance Clerk de développement puis valider les essais.
-3. Configurer les vraies variables d'environnement dans Render.
-4. Remplacer la liste locale `NEV_ID_AUTHORIZED_PARTIES` par les origines de production strictement nécessaires.
-5. Tester la connexion, l'inscription, le profil, la déconnexion et la vérification serveur.
-6. Étudier séparément le raccordement des applications existantes.
+- Type : Web Service.
+- Root Directory : `modules/neV.ID/app`.
+- Build Command : `npm install && npm run build`.
+- Start Command : `npm start`.
 
-Les sous-domaines et le SSO inter-applications ne sont pas encore actifs. Ne pas utiliser de vraies données de comptes tant que ces validations ne sont pas terminées.
+Les variables `VITE_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY` et `NEV_ID_AUTHORIZED_PARTIES` devront être définies séparément dans les variables d'environnement Render. La clé secrète ne doit jamais être préfixée par `VITE_`.
+
+Ce service ne doit pas être déployé sur les domaines définitifs tant que le domaine neV.WORLD et les règles d'authentification entre sous-domaines ne sont pas configurés.
+
+## État actuel
+
+Le code est présent sur la branche de travail GitHub. La création de l'application Clerk, l'installation des dépendances, la compilation, les essais réels et le déploiement Render restent à faire. Aucun compte Clerk, aucune clé réelle et aucun compte d'utilisateur n'ont été créés dans le dépôt.
