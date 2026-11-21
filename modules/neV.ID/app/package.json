@@ -12,7 +12,8 @@
     "build": "vite build",
     "start": "node --env-file-if-exists=.env server.js",
     "preview": "vite preview --host 0.0.0.0",
-    "check": "node --check server.js && node --check src/main.js"
+    "check": "node --check server.js && node --check src/main.js",
+    "test:smoke": "node smoke-test.js"
   },
   "dependencies": {
     "@clerk/backend": "3.31.4",
