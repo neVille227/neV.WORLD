@@ -9,7 +9,7 @@ on:
       - ".github/workflows/nev-id-ci.yml"
   push:
     branches:
-      - feat/integrate-nev-id-module
+      - main
     paths:
       - "modules/neV.ID/**"
       - ".github/workflows/nev-id-ci.yml"
@@ -38,3 +38,5 @@ jobs:
         run: npm run check
       - name: Build application
         run: npm run build
+      - name: Run HTTP smoke tests
+        run: npm run test:smoke
