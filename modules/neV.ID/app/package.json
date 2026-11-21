@@ -1,0 +1,25 @@
+{
+  "name": "nev-id",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "dev:api": "node --watch --env-file-if-exists=.env server.js",
+    "build": "vite build",
+    "start": "node --env-file-if-exists=.env server.js",
+    "preview": "vite preview --host 0.0.0.0",
+    "check": "node --check server.js && node --check src/main.js"
+  },
+  "dependencies": {
+    "@clerk/backend": "^3.31.4",
+    "@clerk/clerk-js": "^6.46.3",
+    "@clerk/localizations": "^4.26.3"
+  },
+  "devDependencies": {
+    "vite": "^8.3.8"
+  }
+}
