@@ -149,7 +149,7 @@ async function handleMe(request, response) {
     });
   } catch (error) {
     // Ne jamais renvoyer les détails internes de Clerk au navigateur.
-    console.error("neV.ID authentication check failed:", error?.message || "Unknown error");
+    console.error("neV.ID authentication check failed:", error?.name || "UnknownError");
     sendJson(response, 401, {
       error: "SESSION_NOT_VERIFIED",
       message: "La session n’a pas pu être vérifiée.",
