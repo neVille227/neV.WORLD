@@ -51,18 +51,62 @@ function sendJson(response, statusCode, payload) {
   response.end(JSON.stringify(payload));
 }
 
-function toWebRequest(incomingRequest) {
-  const headers = new Headers();
+function getSingleHeader(incomingRequest, name) {
+  const value = incomingRequest.headers[name];
+  if (Array.isArray(value)) return value[0];
+  return typeof value === "string" ? value : undefined;
+}
 
-  for (const headerName of ["authorization", "cookie", "origin", "user-agent"]) {
-    const headerValue = incomingRequest.headers[headerName];
-    if (typeof headerValue === "string") {
+function toWebRequest(incomingRequest) {
+  const host =
+    getSingleHeader(incomingRequest, "x-forwarded-host") ||
+    getSingleHeader(incomingRequest, "host");
+
+  if (!host) {
+    throw new Error("Missing host header on authentication request.");
+  }
+
+  const forwardedProto =
+    getSingleHeader(incomingRequest, "x-forwarded-proto") ||
+    (incomingRequest.socket?.encrypted ? "https" : "http");
+  const protocol = forwardedProto.split(",")[0].trim().toLowerCase();
+
+  if (protocol !== "http" && protocol !== "https") {
+    throw new Error("Invalid forwarded protocol on authentication request.");
+  }
+
+  const headers = new Headers();
+  const forwardedHeaders = [
+    "accept",
+    "authorization",
+    "cookie",
+    "host",
+    "origin",
+    "referer",
+    "sec-fetch-dest",
+    "user-agent",
+    "x-forwarded-host",
+    "x-forwarded-proto",
+  ];
+
+  for (const headerName of forwardedHeaders) {
+    const headerValue = getSingleHeader(incomingRequest, headerName);
+    if (headerValue) {
       headers.set(headerName, headerValue);
     }
   }
 
-  return new Request("https://nev-id.internal/api/me", {
-    method: "GET",
+  // Clerk uses these request headers to validate the signed session and
+  // determine whether a browser handshake is required.
+  if (!headers.has("accept")) headers.set("accept", "application/json");
+  if (!headers.has("host")) headers.set("host", host);
+  if (!headers.has("x-forwarded-host")) headers.set("x-forwarded-host", host);
+  if (!headers.has("x-forwarded-proto")) headers.set("x-forwarded-proto", protocol);
+  if (!headers.has("sec-fetch-dest")) headers.set("sec-fetch-dest", "empty");
+
+  const requestUrl = new URL(incomingRequest.url || "/api/me", `${protocol}://${host}`);
+  return new Request(requestUrl, {
+    method: incomingRequest.method || "POST",
     headers,
   });
 }
@@ -168,12 +212,12 @@ const server = createServer(async (request, response) => {
   const method = request.method || "GET";
   const requestUrl = new URL(request.url || "/", "http://localhost");
 
-  if (method !== "GET" && method !== "HEAD") {
-    sendJson(response, 405, { error: "METHOD_NOT_ALLOWED" });
-    return;
-  }
-
   if (requestUrl.pathname === "/api/health") {
+    if (method !== "GET" && method !== "HEAD") {
+      sendJson(response, 405, { error: "METHOD_NOT_ALLOWED" });
+      return;
+    }
+
     sendJson(response, 200, {
       status: "ok",
       service: "neV.ID",
@@ -183,12 +227,23 @@ const server = createServer(async (request, response) => {
   }
 
   if (requestUrl.pathname === "/api/me") {
+    // POST ensures browsers send the Origin header that Clerk validates.
+    if (method !== "POST") {
+      sendJson(response, 405, { error: "METHOD_NOT_ALLOWED" });
+      return;
+    }
+
     await handleMe(request, response);
     return;
   }
 
   if (requestUrl.pathname.startsWith("/api/")) {
     sendJson(response, 404, { error: "API_ROUTE_NOT_FOUND" });
+    return;
+  }
+
+  if (method !== "GET" && method !== "HEAD") {
+    sendJson(response, 405, { error: "METHOD_NOT_ALLOWED" });
     return;
   }
 
