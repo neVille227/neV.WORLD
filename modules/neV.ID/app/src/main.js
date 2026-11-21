@@ -107,7 +107,7 @@ function renderPage(page, clerk) {
         </a>
         <nav class="top-nav" aria-label="Navigation du compte">
           ${isProfile
-            ? '<a class="nav-link active" href="/profile">Mon compte</a>'
+            ? '<a class="nav-link active" href="/profile">Mon compte</a><button class="sign-out-button" id="sign-out" type="button">Déconnexion</button>'
             : '<a class="nav-link" href="/sign-in">Connexion</a><a class="nav-link" href="/sign-up">Inscription</a>'}
           <a class="back-link" href="https://nev-world.onrender.com/">neV.WORLD <span aria-hidden="true">↗</span></a>
         </nav>
@@ -150,19 +150,43 @@ function renderPage(page, clerk) {
     clerk.mountSignUp(mountPoint);
   } else {
     clerk.mountUserProfile(mountPoint);
-    verifyServerSession();
+    verifyServerSession(clerk);
+
+    const signOutButton = document.querySelector("#sign-out");
+    signOutButton?.addEventListener("click", async () => {
+      signOutButton.disabled = true;
+      signOutButton.textContent = "Déconnexion…";
+      try {
+        await clerk.signOut({ redirectUrl: "/sign-in" });
+      } catch (error) {
+        console.error("neV.ID sign-out failed:", error);
+        signOutButton.disabled = false;
+        signOutButton.textContent = "Réessayer";
+      }
+    });
   }
 }
 
-async function verifyServerSession() {
+async function verifyServerSession(clerk) {
   const statusElement = document.querySelector("#server-status");
   if (!statusElement) return;
 
   try {
+    const sessionToken = await clerk.session?.getToken();
+
+    if (!sessionToken) {
+      statusElement.textContent = "Aucun jeton de session actif n’a été fourni.";
+      statusElement.classList.add("is-pending");
+      return;
+    }
+
     const response = await fetch("/api/me", {
       method: "GET",
       credentials: "same-origin",
-      headers: { Accept: "application/json" },
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${sessionToken}`,
+      },
     });
 
     const result = await response.json();
