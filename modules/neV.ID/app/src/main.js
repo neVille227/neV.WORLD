@@ -87,7 +87,7 @@ function getClerkDomain(key) {
   }
 
   try {
-    return atob(encodedDomain).replace(/\$$/, "");
+    return atob(encodedDomain).slice(0, -1);
   } catch {
     throw new Error("La clé publique Clerk n’a pas un format reconnu.");
   }
