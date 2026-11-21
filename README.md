@@ -6,7 +6,7 @@ Portail central de l’écosystème neV.
 
 - **neV.BOOSTER** — bien-être et habitudes : https://nevbooster.onrender.com/
 - **neV.MANGA** — studio de création et univers narratifs.
-- **neV.NEXUS** — mise en relation et création d’opportunités.
+- **neV.NEXUS** — mise en relation et création d’opportunités (pilote privé, accès restreint).
 - **NEHODO.22** — architecture et conception.
 
 ## Structure actuelle
@@ -18,6 +18,10 @@ Le portail est une application statique composée de :
 - `script.js` — navigation mobile et mise à jour de l’année.
 
 Les applications restent indépendantes. Les services partagés (compte neV, profil et API) seront ajoutés dans une phase ultérieure.
+
+## Documentation
+
+- [Architecture cible et stratégie de compte unique](ARCHITECTURE.md)
 
 ## Déploiement sur Render
 
@@ -32,4 +36,4 @@ Le portail ne nécessite aucune compilation.
 
 ## État du projet
 
-Version initiale du portail. L’authentification commune et les sous-domaines personnalisés ne sont pas encore configurés.
+Portail V1 en ligne. L’authentification commune et les sous-domaines personnalisés ne sont pas encore configurés. Voir [ARCHITECTURE.md](ARCHITECTURE.md) pour les prérequis et l’ordre de migration.
