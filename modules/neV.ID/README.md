@@ -39,7 +39,8 @@ neV.ID fournit une identité de connexion commune aux applications de neV.WORLD.
 - L'application affiche une page de configuration tant que la clé publique Clerk n'est pas fournie.
 - Aucun compte Clerk n'a été créé ou configuré.
 - Aucune clé réelle n'est enregistrée dans Git.
-- La compilation, la connexion réelle, le test du profil et la propagation de session entre applications restent à vérifier.
+- L'installation des dépendances, la vérification de syntaxe JavaScript et la compilation de production ont réussi dans GitHub Actions sur la branche de travail.
+- La connexion réelle avec Clerk, le test du profil, la déconnexion réelle et la propagation de session entre applications restent à vérifier.
 - Aucun déploiement Render n'a été effectué.
 
 ## Lancement local
