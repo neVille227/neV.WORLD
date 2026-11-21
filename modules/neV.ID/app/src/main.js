@@ -234,6 +234,8 @@ async function start() {
         borderRadius: "0.65rem",
       },
     },
+    signInUrl: "/sign-in",
+    signUpUrl: "/sign-up",
     signInFallbackRedirectUrl: "/profile",
     signUpFallbackRedirectUrl: "/profile",
     afterSignOutUrl: "/sign-in",
@@ -267,8 +269,14 @@ start().catch((error) => {
       <div class="setup-mark">neV<span>.</span></div>
       <p class="eyebrow">NEV.ID · INITIALISATION</p>
       <h1>Impossible de démarrer<br /><span>le service de compte.</span></h1>
-      <p>${error instanceof Error ? error.message : "Une erreur inattendue est survenue."}</p>
+      <p id="startup-error"></p>
       <a class="button-link" href="/">Réessayer</a>
     </main>
   `;
+  const errorMessage = document.querySelector("#startup-error");
+  if (errorMessage) {
+    errorMessage.textContent = error instanceof Error
+      ? error.message
+      : "Une erreur inattendue est survenue.";
+  }
 });
