@@ -106,4 +106,4 @@ Ce service ne doit pas être déployé sur les domaines définitifs tant que le 
 
 ## État actuel
 
-Le code est présent sur la branche de travail GitHub. La création de l'application Clerk, l'installation des dépendances, la compilation, les essais réels et le déploiement Render restent à faire. Aucun compte Clerk, aucune clé réelle et aucun compte d'utilisateur n'ont été créés dans le dépôt.
+Le code est présent sur la branche de travail GitHub. L'installation des dépendances, le contrôle syntaxique et la compilation de production ont réussi dans GitHub Actions. La création de l'application Clerk, la configuration locale des clés, les essais réels d'inscription/connexion/profil et le déploiement Render restent à faire. Aucun compte Clerk, aucune clé réelle et aucun compte d'utilisateur n'ont été créés dans le dépôt.
