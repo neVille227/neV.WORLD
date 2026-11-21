@@ -87,9 +87,17 @@ Puis tester dans le navigateur :
 - `/profile` — profil et paramètres du compte.
 - Déconnexion depuis la barre supérieure du profil.
 - `/api/health` — état du serveur.
-- `/api/me` — vérification du jeton par le backend après connexion.
+- `POST /api/me` — vérification du jeton par le backend après connexion.
 
-Le navigateur récupère le jeton à partir de la session Clerk et le transmet au backend dans l'en-tête `Authorization: Bearer`. Le backend le vérifie avec `authenticateRequest()` et la liste `authorizedParties`.
+Le navigateur récupère le jeton à partir de la session Clerk et le transmet au backend dans l'en-tête `Authorization: Bearer`. L'appel utilise `POST` pour que le navigateur fournisse l'origine de la requête. Le backend préserve les en-têtes nécessaires (Origin, Referer, Host, User-Agent et en-têtes de proxy), puis vérifie la session avec `authenticateRequest()` et la liste `authorizedParties`.
+
+Le contrôle local des endpoints est automatisé :
+
+```bash
+npm run test:smoke
+```
+
+Ce test vérifie la disponibilité, le fallback SPA, les méthodes de l'API et le comportement sûr lorsque Clerk n'est pas configuré.
 
 ## 5. Déploiement ultérieur sur Render
 
