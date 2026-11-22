@@ -53,3 +53,26 @@ if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-mot
 } else {
   revealTargets.forEach((element) => element.classList.add('is-visible'));
 }
+
+
+// Transition douce entre les pages internes de neV.WORLD.
+document.addEventListener('click', (event) => {
+  const link = event.target.closest('a');
+  if (!link || link.target === '_blank' || link.hasAttribute('download')) return;
+  if (document.body.classList.contains('intro-page')) return;
+
+  let destination;
+  try {
+    destination = new URL(link.href, window.location.href);
+  } catch {
+    return;
+  }
+
+  if (destination.origin !== window.location.origin) return;
+  if (destination.pathname === window.location.pathname && destination.hash) return;
+  if (destination.href === window.location.href) return;
+
+  event.preventDefault();
+  document.body.classList.add('page-leaving');
+  window.setTimeout(() => window.location.assign(destination.href), 240);
+});
