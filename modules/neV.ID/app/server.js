@@ -166,9 +166,41 @@ async function handleMe(request, response) {
   }
 }
 
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+async function loadProjects() {
+  return JSON.parse(await readFile(path.join(portalDirectory, "projects.json"), "utf-8"));
+}
+
+// Rendu côté serveur des cartes projets à partir de projects.json.
+function renderProjectCards(projects) {
+  return projects.map((p) => {
+    const link = p.url
+      ? `<a class="card-link" href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(p.linkLabel)} <span>↗</span></a>`
+      : `<span class="card-link card-link-muted">${escapeHtml(p.linkLabel)}</span>`;
+    return `        <article class="project-card ${escapeHtml(p.id)}-card">
+          <div class="card-topline"><span class="project-index">${escapeHtml(p.index)} / ${escapeHtml(p.domain)}</span><span class="card-status status-${escapeHtml(p.status)}"><i></i> ${escapeHtml(p.statusLabel)}</span></div>
+          <div class="project-emblem emblem-${escapeHtml(p.id)}"><span>${escapeHtml(p.emblem)}</span><i></i></div>
+          <h3>${escapeHtml(p.name)}</h3>
+          <p>${escapeHtml(p.description)}</p>
+          <div class="card-bottom"><span class="card-category">${escapeHtml(p.category)}</span>${link}</div>
+        </article>`;
+  }).join("\n\n");
+}
+
 async function servePortal(request, response, fileName) {
   try {
-    const body = await readFile(path.join(portalDirectory, fileName));
+    let body = await readFile(path.join(portalDirectory, fileName));
+    if (fileName === "index.html") {
+      const cards = renderProjectCards(await loadProjects());
+      const html = body.toString("utf-8").replace(
+        /<!--projects:start-->[\s\S]*?<!--projects:end-->/,
+        () => cards,
+      );
+      body = Buffer.from(html, "utf-8");
+    }
     const contentType = mimeTypes[path.extname(fileName).toLowerCase()] || "application/octet-stream";
     setSecurityHeaders(response);
     response.writeHead(200, {
@@ -247,6 +279,19 @@ const server = createServer(async (request, response) => {
       service: "neV.ID",
       authenticationConfigured: Boolean(clerkClient),
     });
+    return;
+  }
+
+  if (requestUrl.pathname === "/api/projects") {
+    if (method !== "GET" && method !== "HEAD") {
+      sendJson(response, 405, { error: "METHOD_NOT_ALLOWED" });
+      return;
+    }
+    try {
+      sendJson(response, 200, { projects: await loadProjects() });
+    } catch {
+      sendJson(response, 500, { error: "PROJECTS_UNAVAILABLE" });
+    }
     return;
   }
 
