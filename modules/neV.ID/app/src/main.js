@@ -3,6 +3,37 @@ import "./style.css";
 const app = document.querySelector("#app");
 const publishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY?.trim();
 
+const WORLD_URL = "https://nev-world.onrender.com/";
+// Seules ces origines peuvent recevoir l'utilisateur après connexion (anti « open redirect »).
+const ALLOWED_RETURN_ORIGINS = [
+  "https://nev-world.onrender.com",
+  "https://nev.world",
+  "https://www.nev.world",
+  ...(import.meta.env.DEV ? ["http://localhost:5173", "http://127.0.0.1:5173"] : []),
+];
+
+function safeReturnUrl(value) {
+  try {
+    const url = new URL(value, window.location.origin);
+    return ALLOWED_RETURN_ORIGINS.includes(url.origin) ? url.href : null;
+  } catch {
+    return null;
+  }
+}
+
+function getReturnUrl() {
+  const fromQuery = new URLSearchParams(window.location.search).get("redirect_url");
+  const safe = fromQuery ? safeReturnUrl(fromQuery) : null;
+  try {
+    if (safe) sessionStorage.setItem("nevReturnUrl", safe);
+    return safe || safeReturnUrl(sessionStorage.getItem("nevReturnUrl")) || null;
+  } catch {
+    return safe;
+  }
+}
+
+const returnUrl = getReturnUrl();
+
 const copy = {
   signIn: {
     eyebrow: "IDENTITÉ neV",
@@ -25,12 +56,12 @@ function renderSetupMessage() {
   app.innerHTML = `
     <div class="page-shell">
       <header class="topbar">
-        <a class="brand" href="https://nev-world.onrender.com/" aria-label="Retour vers neV.WORLD">
+        <a class="brand" href="${returnUrl || WORLD_URL}" aria-label="Retour vers neV.WORLD">
           <span class="brand-mark">neV<span>.</span></span>
           <span class="brand-divider"></span>
           <span class="brand-label">IDENTITY</span>
         </a>
-        <a class="back-link" href="https://nev-world.onrender.com/">Retour à neV.WORLD <span aria-hidden="true">↗</span></a>
+        <a class="back-link" href="${returnUrl || WORLD_URL}">Retour à neV.WORLD <span aria-hidden="true">↗</span></a>
       </header>
       <main class="setup-main">
         <div class="setup-mark">neV<span>.</span></div>
@@ -98,7 +129,7 @@ function renderPage(page, clerk) {
   app.innerHTML = `
     <div class="page-shell">
       <header class="topbar">
-        <a class="brand" href="https://nev-world.onrender.com/" aria-label="Retour vers neV.WORLD">
+        <a class="brand" href="${returnUrl || WORLD_URL}" aria-label="Retour vers neV.WORLD">
           <span class="brand-mark">neV<span>.</span></span>
           <span class="brand-divider"></span>
           <span class="brand-label">IDENTITY</span>
@@ -107,7 +138,7 @@ function renderPage(page, clerk) {
           ${isProfile
             ? '<a class="nav-link active" href="/profile">Mon compte</a><button class="sign-out-button" id="sign-out" type="button">Déconnexion</button>'
             : '<a class="nav-link" href="/sign-in">Connexion</a><a class="nav-link" href="/sign-up">Inscription</a>'}
-          <a class="back-link" href="https://nev-world.onrender.com/">neV.WORLD <span aria-hidden="true">↗</span></a>
+          <a class="back-link" href="${returnUrl || WORLD_URL}">neV.WORLD <span aria-hidden="true">↗</span></a>
         </nav>
       </header>
 
@@ -143,9 +174,9 @@ function renderPage(page, clerk) {
   const mountPoint = document.querySelector("#clerk-component");
 
   if (page === "signIn") {
-    clerk.mountSignIn(mountPoint);
+    clerk.mountSignIn(mountPoint, returnUrl ? { forceRedirectUrl: returnUrl, signUpUrl: "/sign-up" } : {});
   } else if (page === "signUp") {
-    clerk.mountSignUp(mountPoint);
+    clerk.mountSignUp(mountPoint, returnUrl ? { forceRedirectUrl: returnUrl, signInUrl: "/sign-in" } : {});
   } else {
     clerk.mountUserProfile(mountPoint);
     verifyServerSession(clerk);
@@ -242,7 +273,7 @@ async function start() {
     signInFallbackRedirectUrl: "/profile",
     signUpFallbackRedirectUrl: "/profile",
     afterSignOutUrl: "/sign-in",
-    allowedRedirectOrigins: [window.location.origin],
+    allowedRedirectOrigins: [window.location.origin, ...ALLOWED_RETURN_ORIGINS],
   });
 
   const requestedPath = window.location.pathname.replace(/\/+$/, "") || "/";
@@ -253,7 +284,7 @@ async function start() {
       : "signIn";
 
   if (clerk.isSignedIn && page !== "profile") {
-    window.location.replace("/profile");
+    window.location.replace(returnUrl || "/profile");
     return;
   }
 
