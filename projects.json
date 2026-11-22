@@ -16,14 +16,14 @@
     "id": "manga",
     "index": "02",
     "domain": "CRÉATION",
-    "status": "progress",
-    "statusLabel": "EN DÉVELOPPEMENT",
+    "status": "live",
+    "statusLabel": "EN LIGNE",
     "emblem": "漫",
     "name": "neV.MANGA",
     "description": "Un studio de création dédié à des récits originaux, des univers construits et des personnages marquants.",
     "category": "Création & narration",
-    "url": null,
-    "linkLabel": "Bientôt disponible"
+    "url": "https://nevmanga.onrender.com/",
+    "linkLabel": "Ouvrir le projet"
   },
   {
     "id": "nexus",
