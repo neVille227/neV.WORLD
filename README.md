@@ -27,6 +27,10 @@ Les applications restent autonomes pour leurs fonctionnalités et leurs données
 - [Architecture globale](ARCHITECTURE.md)
 - [Module neV.ID](modules/neV.ID/README.md)
 
+## Adresse unique (portail + neV.ID)
+
+Le serveur Node de `modules/neV.ID/app` sert à la fois le portail (`/`, `/compte.html`) et le compte neV.ID (`/sign-in`, `/sign-up`, `/profile`, `/api`) sur **une même adresse** (service Render `nev-id-preview`). Après inscription ou connexion, la personne revient sur `/`.
+
 ## Déploiement actuel sur Render
 
 Le portail est un **Static Site** :

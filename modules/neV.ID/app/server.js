@@ -6,6 +6,15 @@ import { createClerkClient } from "@clerk/backend";
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const buildDirectory = path.join(currentDirectory, "dist");
+// Le portail neV.WORLD (fichiers statiques à la racine du dépôt) est servi sur la même adresse que neV.ID.
+const portalDirectory = path.resolve(currentDirectory, "../../..");
+const portalFiles = {
+  "/": "index.html",
+  "/index.html": "index.html",
+  "/compte.html": "compte.html",
+  "/style.css": "style.css",
+  "/script.js": "script.js",
+};
 const port = Number(process.env.PORT) || 3000;
 
 const publishableKey = process.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -157,6 +166,21 @@ async function handleMe(request, response) {
   }
 }
 
+async function servePortal(request, response, fileName) {
+  try {
+    const body = await readFile(path.join(portalDirectory, fileName));
+    const contentType = mimeTypes[path.extname(fileName).toLowerCase()] || "application/octet-stream";
+    setSecurityHeaders(response);
+    response.writeHead(200, {
+      "Content-Type": contentType,
+      "Cache-Control": fileName.endsWith(".html") ? "no-cache" : "public, max-age=3600",
+    });
+    response.end(request.method === "HEAD" ? undefined : body);
+  } catch {
+    sendJson(response, 404, { error: "NOT_FOUND" });
+  }
+}
+
 async function serveStatic(request, response, pathname) {
   let decodedPath;
 
@@ -244,6 +268,12 @@ const server = createServer(async (request, response) => {
 
   if (method !== "GET" && method !== "HEAD") {
     sendJson(response, 405, { error: "METHOD_NOT_ALLOWED" });
+    return;
+  }
+
+  const portalFile = portalFiles[requestUrl.pathname];
+  if (portalFile) {
+    await servePortal(request, response, portalFile);
     return;
   }
 
