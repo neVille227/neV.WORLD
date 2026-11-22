@@ -88,7 +88,20 @@ Ces adresses sont des objectifs, pas des services actuellement actifs. La possib
 6. Préparer une migration progressive après sauvegarde et tests de restauration.
 7. Raccorder les autres applications une par une.
 
-## 9. Hors périmètre à ce stade
+## 9. neV.COMMERCE — espace commercial
+
+neV.COMMERCE est un service transversal de présentation et, à terme, de vente des articles issus des marques développées autour des projets neV. Il ne remplace pas les projets et ne doit pas absorber leurs identités.
+
+Principes :
+- Chaque marque est rattachée à un projet source et possède son identité visuelle, ses règles et ses collections.
+- Le catalogue central référence les marques et leurs produits, avec une provenance claire.
+- Le panier et le parcours de commande pourront être communs, sous réserve de validation du modèle opérationnel.
+- Les données de commande, les stocks, les paiements et les accès administratifs devront être protégés côté serveur.
+- Aucun paiement ne doit être activé avant validation du cadre légal, du prestataire, des remboursements, de la livraison et de la sécurité.
+
+La première page `commerce.html` est une vitrine de concept, pas une boutique transactionnelle. Les noms de marques, emblèmes et produits qui y sont présentés restent à valider. Voir [COMMERCE.md](COMMERCE.md).
+
+## 10. Hors périmètre à ce stade
 
 - Aucun achat de domaine ou abonnement.
 - Aucune instance Clerk créée ou configurée par ce dépôt.
@@ -97,7 +110,7 @@ Ces adresses sont des objectifs, pas des services actuellement actifs. La possib
 - Aucun changement apporté aux dépôts ou services neV.BOOSTER, neV.MANGA, neV.NEXUS ou NEHODO.22.
 - Aucun déploiement de production ni aucun déploiement sur un domaine personnalisé. La prévisualisation Render est isolée du portail principal.
 
-## 10. Critères de validation avant mise en production
+## 11. Critères de validation avant mise en production
 
 - Connexion et déconnexion cohérentes entre les applications autorisées.
 - Vérification des jetons côté serveur.

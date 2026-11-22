@@ -285,3 +285,49 @@ h1 span, h2 span {
 .notice strong { color: #fff; }
 @media (max-width: 850px) { .howto-grid { grid-template-columns: 1fr; } }
 @media (max-width: 650px) { .status-table th:nth-child(3), .status-table td:nth-child(3) { display: none; } }
+
+
+/* neV.COMMERCE — fondation de la vitrine */
+.commerce-page .site-header { max-width: 1240px; }
+.commerce-page .commerce-nav { margin-left: auto; margin-right: 20px; }
+.commerce-hero { padding-top: 100px; padding-bottom: 80px; }
+.commerce-kicker { color: var(--red-light); font: 700 10px var(--display); letter-spacing: 3px; margin: 40px 0 10px; }
+.commerce-hero h1 { max-width: 850px; }
+.commerce-hero h1 span { font-size: .58em; letter-spacing: -1.4px; }
+.commerce-hero .hero-text { max-width: 660px; }
+.commerce-state { color: #9a9eaa; font: 700 8px var(--display); letter-spacing: 1.3px; margin-top: 34px; }
+.commerce-principles { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; padding-bottom: 80px; }
+.commerce-principles article { border: 1px solid var(--line); border-radius: 8px; padding: 24px; background: rgba(18,20,28,.75); }
+.commerce-principles article > span, .commerce-roadmap li > span { color: var(--red-light); font: 700 10px var(--display); letter-spacing: 1px; }
+.commerce-principles h2 { font-size: 18px; letter-spacing: -.5px; margin: 17px 0 8px; }
+.commerce-principles p, .commerce-brand-card p { color: #999eaa; font-size: 11px; line-height: 1.85; margin: 0; }
+.commerce-univers { padding-top: 25px; padding-bottom: 95px; }
+.commerce-brand-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+.commerce-brand-card { min-height: 260px; border: 1px solid var(--line); border-radius: 8px; padding: 24px; background: linear-gradient(145deg,rgba(20,22,30,.98),rgba(12,14,20,.98)); }
+.commerce-brand-mark { width: 52px; height: 52px; border-radius: 15px; display: grid; place-items: center; color: #fff; font: 800 19px var(--display); margin-bottom: 20px; background: linear-gradient(145deg,#68232d,#26151d); }
+.commerce-tag { color: #9297a3; font: 700 8px var(--display); letter-spacing: 1.4px; }
+.commerce-brand-card h3 { font: 800 19px var(--display); margin: 8px 0; }
+.commerce-brand-card p { max-width: 460px; min-height: 42px; }
+.commerce-brand-card small { display: inline-block; color: #d0a76e; font-size: 9px; margin-top: 18px; }
+.mark-booster { background: linear-gradient(145deg,#7c2832,#311a25); }
+.mark-nehodo { background: linear-gradient(145deg,#4d5363,#222630); }
+.commerce-roadmap { padding-top: 20px; padding-bottom: 100px; }
+.commerce-roadmap h2 { margin: 17px 0 28px; }
+.commerce-roadmap ol { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+.commerce-roadmap li { display: grid; grid-template-columns: 55px 1fr auto; gap: 15px; align-items: start; padding: 20px 4px; border-bottom: 1px solid var(--line); }
+.commerce-roadmap li strong { font: 700 13px var(--display); }
+.commerce-roadmap li p { color: #999eaa; font-size: 11px; margin: 5px 0 0; }
+.commerce-roadmap li em { color: #c9a45b; font-size: 9px; font-style: normal; }
+@media (max-width: 650px) {
+  .commerce-page .site-header { padding: 0 20px; }
+  .commerce-page .commerce-nav { display: none; }
+  .commerce-page .site-header > .button { font-size: 0; padding: 0 10px; }
+  .commerce-hero { padding-top: 70px; padding-bottom: 55px; }
+  .commerce-kicker { line-height: 1.8; margin-top: 32px; }
+  .commerce-hero h1 span { font-size: .62em; line-height: 1.25; }
+  .commerce-principles, .commerce-brand-grid { grid-template-columns: 1fr; }
+  .commerce-principles { padding-bottom: 60px; }
+  .commerce-univers { padding-bottom: 65px; }
+  .commerce-roadmap li { grid-template-columns: 35px 1fr; }
+  .commerce-roadmap li em { grid-column: 2; }
+}
