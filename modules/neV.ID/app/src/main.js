@@ -1,5 +1,3 @@
-import { Clerk } from "@clerk/clerk-js";
-import { frFR } from "@clerk/localizations";
 import "./style.css";
 
 const app = document.querySelector("#app");
@@ -216,6 +214,11 @@ async function start() {
     renderSetupMessage();
     return;
   }
+
+  const [{ Clerk }, { frFR }] = await Promise.all([
+    import("@clerk/clerk-js"),
+    import("@clerk/localizations"),
+  ]);
 
   const clerkDomain = getClerkDomain(publishableKey);
   await loadClerkUi(clerkDomain);
