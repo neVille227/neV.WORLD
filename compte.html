@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0d12">
+  <meta name="description" content="neV.ID — le compte unique de l’écosystème neV.WORLD : objectif, fonctionnement et état d’avancement.">
+  <title>neV.ID — Le compte unique de neV.WORLD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="neV.WORLD, accueil">
+      <span class="brand-mark">neV<span>.</span></span>
+      <span class="brand-world">WORLD</span>
+    </a>
+    <button class="menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="primary-nav">
+      <span></span><span></span>
+    </button>
+    <nav class="primary-nav" id="primary-nav" aria-label="Navigation principale">
+      <a href="index.html" class="nav-link">Accueil</a>
+      <a href="index.html#univers" class="nav-link">Nos projets</a>
+      <a href="compte.html" class="nav-link active">neV.ID</a>
+    </nav>
+    <div class="header-actions">
+      <a class="button button-outline button-small" href="index.html">Retour <span aria-hidden="true">←</span></a>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero section-wrap">
+      <div class="eyebrow"><span class="eyebrow-line"></span> neV.ID</div>
+      <h1>Un compte.<br><span>Tous les projets neV.</span></h1>
+      <p class="hero-text">neV.ID sera le compte unique de neV.WORLD : vous vous identifiez une seule fois et retrouvez votre accès dans les projets compatibles, sans créer un compte par projet.</p>
+    </section>
+
+    <section class="section-wrap">
+      <div class="notice"><strong>Parcours :</strong> « Créer mon compte » ouvre neV.ID ; une fois le compte créé, vous revenez automatiquement sur neV.WORLD. <strong>État actuel : préversion de test.</strong> La connexion n’est pas encore ouverte. Aucun compte ne peut être créé aujourd’hui sur neV.ID, et les projets neV conservent pour l’instant leur propre accès.</div>
+    </section>
+
+    <section class="howto section-wrap">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-line"></span> FONCTIONNEMENT PRÉVU</div>
+          <h2>Simple pour vous.<br><span>Sécurisé pour tous.</span></h2>
+        </div>
+        <p>L’authentification est confiée à Clerk, un service spécialisé. Chaque projet vérifie lui-même votre identité avant d’afficher des données privées.</p>
+      </div>
+      <ol class="howto-grid">
+        <li><span class="howto-num">01</span><h3>Créer son identité</h3><p>Vous vous inscrivez une fois sur neV.ID.</p></li>
+        <li><span class="howto-num">02</span><h3>Se connecter</h3><p>Votre session est reconnue par les projets neV compatibles.</p></li>
+        <li><span class="howto-num">03</span><h3>Garder la maîtrise</h3><p>Chaque projet garde ses propres données, séparées des autres.</p></li>
+      </ol>
+    </section>
+
+    <section class="section-wrap">
+      <div class="section-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> ÉTAT D’AVANCEMENT</div><h2><span>Feuille de route</span></h2></div></div>
+      <table class="status-table">
+        <thead><tr><th>ÉTAPE</th><th>STATUT</th><th>DÉTAIL</th></tr></thead>
+        <tbody>
+          <tr><td>Interface et serveur neV.ID</td><td class="state-done">Prévisualisation</td><td>Disponible en test, sans connexion réelle tant que Clerk n’est pas configuré.</td></tr>
+          <tr><td>Application Clerk de développement</td><td class="state-todo">À faire</td><td>Création du compte Clerk et de la clé publique.</td></tr>
+          <tr><td>Domaine neV.WORLD</td><td class="state-todo">À faire</td><td>Requis avant tout compte unique en production.</td></tr>
+          <tr><td>Pilote neV.BOOSTER</td><td class="state-todo">À faire</td><td>Après sauvegarde des données existantes.</td></tr>
+          <tr><td>neV.NEXUS et neV.MANGA</td><td class="state-todo">À venir</td><td>Après validation du pilote.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="brand footer-brand" href="index.html"><span class="brand-mark">neV<span>.</span></span><span class="brand-world">WORLD</span></a>
+    <p>Un écosystème en construction.</p>
+    <span class="footer-copy">© <span id="current-year">2026</span> neV.WORLD</span>
+  </footer>
+</body>
+</html>

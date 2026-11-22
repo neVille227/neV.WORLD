@@ -3,9 +3,10 @@ import "./style.css";
 const app = document.querySelector("#app");
 const publishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY?.trim();
 
-const WORLD_URL = "https://nev-world.onrender.com/";
+const WORLD_URL = "/";
 // Seules ces origines peuvent recevoir l'utilisateur après connexion (anti « open redirect »).
 const ALLOWED_RETURN_ORIGINS = [
+  window.location.origin,
   "https://nev-world.onrender.com",
   "https://nev.world",
   "https://www.nev.world",
