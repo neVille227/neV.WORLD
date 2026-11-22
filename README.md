@@ -21,10 +21,10 @@ neV.WORLD est l’écosystème principal. **neV.ID est un module interne** charg
 
 Les applications restent autonomes pour leurs fonctionnalités et leurs données métier. Le partage d’identité sera ajouté progressivement, après validation de l’architecture et des migrations.
 
-## Documentation
+## Espace commercial\n\nneV.COMMERCE est le futur espace commercial de l’écosystème. Il réunira les marques issues des projets neV, chacune conservant son identité et ses collections. La page de présentation est `commerce.html`. À ce stade, il s’agit d’une fondation éditoriale : aucun catalogue réel, panier, paiement ou traitement de commande n’est activé.\n\n## Documentation
 
 - [Guide : à quoi sert le site et comment l'utiliser](GUIDE.md)
-- [Architecture globale](ARCHITECTURE.md)
+- [Architecture globale](ARCHITECTURE.md)\n- [Fondation neV.COMMERCE](COMMERCE.md)
 - [Module neV.ID](modules/neV.ID/README.md)
 
 ## Adresse unique (portail + neV.ID)
