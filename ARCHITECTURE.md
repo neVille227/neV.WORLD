@@ -14,6 +14,7 @@ neV.WORLD est l’écosystème principal qui rassemble plusieurs applications. L
 - neV.NEXUS : application distincte ; son éventuelle migration doit être étudiée séparément.
 - Domaine personnalisé : pas encore acquis.
 - Authentification commune : pas encore déployée.
+- Prévisualisation neV.ID : https://nev-id-preview.onrender.com, service Render gratuit distinct, suivi de la branche de travail. Le build et le démarrage du serveur ont été confirmés ; Clerk reste non configuré.
 
 Le portail actuel est un site statique composé de `index.html`, `style.css` et `script.js`. Il ne possède pas de backend de comptes.
 
@@ -30,7 +31,7 @@ neV.WORLD/
         └── README.md
 ```
 
-Cette organisation documente le module sans imposer dès maintenant un nouveau framework ou un serveur au portail statique. Les composants exécutables de neV.ID seront ajoutés après validation de la conception.
+Le portail central reste statique. Le module neV.ID possède son propre frontend et son backend Node, rangés dans le dépôt principal et déployés séparément.
 
 ## 4. Responsabilités de neV.ID
 
@@ -47,9 +48,9 @@ Cette organisation documente le module sans imposer dès maintenant un nouveau f
 
 Le navigateur ne doit jamais décider seul qu'un utilisateur est autorisé à accéder à une ressource privée.
 
-## 5. Fournisseur d'identité envisagé
+## 5. Fournisseur d'identité retenu
 
-**Clerk est le fournisseur retenu pour la phase de conception**, mais il n'est pas encore configuré. Il devra être testé en environnement de développement avant toute mise en production.
+**Clerk est le fournisseur retenu**, mais aucune instance neV.WORLD n'a encore été créée. Les essais doivent se faire dans un environnement Development avant toute mise en production.
 
 Les clés secrètes resteront dans les variables d'environnement des services concernés ; elles ne seront jamais enregistrées dans Git ni exposées au navigateur.
 
@@ -94,7 +95,7 @@ Ces adresses sont des objectifs, pas des services actuellement actifs. La possib
 - Aucune base d'utilisateurs commune créée.
 - Aucun compte existant fusionné ou supprimé.
 - Aucun changement apporté aux dépôts ou services neV.BOOSTER, neV.MANGA, neV.NEXUS ou NEHODO.22.
-- Aucun déploiement Render supplémentaire.
+- Aucun déploiement de production ni aucun déploiement sur un domaine personnalisé. La prévisualisation Render est isolée du portail principal.
 
 ## 10. Critères de validation avant mise en production
 
