@@ -1,0 +1,42 @@
+name: neV.ID checks
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "modules/neV.ID/**"
+      - ".github/workflows/nev-id-ci.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "modules/neV.ID/**"
+      - ".github/workflows/nev-id-ci.yml"
+  workflow_dispatch:
+
+jobs:
+  verify:
+    name: Verify neV.ID
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: modules/neV.ID/app
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: modules/neV.ID/app/package.json
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund --fetch-retries=2 --fetch-timeout=60000
+      - name: Check JavaScript syntax
+        run: npm run check
+      - name: Build application
+        run: npm run build
+      - name: Run HTTP smoke tests
+        run: npm run test:smoke
