@@ -268,6 +268,10 @@ async function start() {
         colorBorder: "rgba(255,255,255,0.12)",
         borderRadius: "0.65rem",
       },
+      elements: {
+        rootBox: { width: "100%", maxWidth: "100%" },
+        cardBox: { width: "100%", maxWidth: "100%", boxShadow: "none" },
+      },
     },
     signInUrl: "/sign-in",
     signUpUrl: "/sign-up",

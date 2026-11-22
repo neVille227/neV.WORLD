@@ -370,3 +370,38 @@ code {
 @media (min-width: 1600px) {
   .page-shell { width: min(90rem, 100%); }
 }
+
+/* ===== Page « Mon compte » : le panneau Clerk doit toujours tenir dans l'écran ===== */
+html, body { max-width: 100%; overflow-x: hidden; }
+.auth-layout > * { min-width: 0; }
+.auth-panel { min-width: 0; overflow: hidden; }
+.clerk-mount { max-width: 100%; min-width: 0; display: flex; justify-content: center; }
+.clerk-mount .cl-rootBox,
+.clerk-mount .cl-cardBox,
+.clerk-mount .cl-userProfile-root,
+.clerk-mount .cl-card {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+.clerk-mount .cl-cardBox, .clerk-mount .cl-card { box-shadow: none !important; }
+/* Profil : une colonne centrée, large sur ordinateur, pleine largeur sur mobile */
+.profile-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2.5rem;
+  padding: 3rem 0;
+}
+.profile-layout .intro-panel { max-width: 46rem; margin-inline: auto; width: 100%; text-align: center; }
+.profile-layout .intro-panel .eyebrow { justify-content: center; }
+.profile-layout .intro-copy { margin-inline: auto; }
+.profile-layout .ecosystem-note { justify-content: center; text-align: left; }
+.profile-layout .auth-panel { max-width: 60rem; width: 100%; align-self: center; justify-self: auto; padding: 1rem; }
+@media (max-width: 650px) {
+  .profile-layout { padding: 2rem 0; gap: 1.8rem; }
+  .profile-layout .auth-panel { padding: .5rem; border-radius: 10px; }
+  .profile-layout .intro-panel { text-align: left; }
+  .profile-layout .intro-panel .eyebrow, .profile-layout .ecosystem-note { justify-content: flex-start; }
+}
