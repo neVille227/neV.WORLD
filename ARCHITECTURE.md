@@ -110,7 +110,7 @@ La première page `commerce.html` est une vitrine de concept, pas une boutique t
 - Aucun changement apporté aux dépôts ou services neV.BOOSTER, neV.MANGA, neV.NEXUS ou NEHODO.22.
 - Aucun déploiement de production ni aucun déploiement sur un domaine personnalisé. La prévisualisation Render est isolée du portail principal.
 
-## 12. Critères de validation avant mise en production
+## 11. Critères de validation avant mise en production
 
 - Connexion et déconnexion cohérentes entre les applications autorisées.
 - Vérification des jetons côté serveur.
