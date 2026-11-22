@@ -230,7 +230,7 @@ function renderProjectPage(project) {
 </body>
 </html>`;
 }
-\nasync function servePortal(request, response, fileName) {
+async function servePortal(request, response, fileName) {
   try {
     let body = await readFile(path.join(portalDirectory, fileName));
     if (fileName === "index.html" || fileName === "explorer.html") {
