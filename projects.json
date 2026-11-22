@@ -1,0 +1,54 @@
+[
+  {
+    "id": "booster",
+    "index": "01",
+    "domain": "BIEN-ÊTRE",
+    "status": "live",
+    "statusLabel": "EN LIGNE",
+    "emblem": "nB",
+    "name": "neV.BOOSTER",
+    "description": "Des impulsions simples pour dynamiser le quotidien grâce à des activités courtes et accessibles.",
+    "category": "Bien-être & habitudes",
+    "url": "https://nevbooster.onrender.com/",
+    "linkLabel": "Ouvrir le projet"
+  },
+  {
+    "id": "manga",
+    "index": "02",
+    "domain": "CRÉATION",
+    "status": "progress",
+    "statusLabel": "EN DÉVELOPPEMENT",
+    "emblem": "漫",
+    "name": "neV.MANGA",
+    "description": "Un studio de création dédié à des récits originaux, des univers construits et des personnages marquants.",
+    "category": "Création & narration",
+    "url": null,
+    "linkLabel": "Bientôt disponible"
+  },
+  {
+    "id": "nexus",
+    "index": "03",
+    "domain": "IMPACT",
+    "status": "progress",
+    "statusLabel": "PILOTE PRIVÉ",
+    "emblem": "NX",
+    "name": "neV.NEXUS",
+    "description": "Une initiative tournée vers la mise en relation des personnes et la création d’opportunités.",
+    "category": "Connexion & opportunités",
+    "url": null,
+    "linkLabel": "Accès encadré"
+  },
+  {
+    "id": "nehodo",
+    "index": "04",
+    "domain": "CONCEPTION",
+    "status": "progress",
+    "statusLabel": "EN DÉVELOPPEMENT",
+    "emblem": "N.",
+    "name": "NEHODO.22",
+    "description": "Un espace consacré à la conception architecturale et à la mise en valeur de projets de construction.",
+    "category": "Architecture & conception",
+    "url": null,
+    "linkLabel": "Bientôt disponible"
+  }
+]
