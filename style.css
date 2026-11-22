@@ -260,3 +260,28 @@ h1 span, h2 span {
 @media (max-width: 650px) {
   .primary-nav { background: rgba(8,9,13,.97); }
 }
+
+/* Mode d'emploi et page neV.ID */
+.account-status { display: inline-flex; align-items: center; gap: 8px; transition: color .2s ease; }
+.account-status:hover { color: #fff; }
+.howto { padding-bottom: 80px; }
+.howto-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.howto-grid li { border: 1px solid var(--line); border-radius: 8px; padding: 23px 25px; background: linear-gradient(145deg, rgba(22,26,36,.96), rgba(15,18,25,.96)); }
+.howto-num { color: var(--red-light); font: 700 10px var(--display); letter-spacing: 1.5px; }
+.howto-grid h3 { font: 800 18px var(--display); letter-spacing: -.5px; margin: 14px 0 8px; }
+.howto-grid p { color: #999eaa; font-size: 12px; line-height: 1.8; margin: 0; }
+.inline-link { color: #e8e9ed; border-bottom: 1px solid var(--red); }
+.page-hero { padding-top: 70px; padding-bottom: 40px; max-width: 1240px; }
+.page-hero h1 { font: 800 clamp(36px, 5vw, 58px)/1.1 var(--display); letter-spacing: -2.5px; margin: 22px 0 18px; }
+.page-hero h1 span { color: #777d8a; }
+.page-hero .hero-text { max-width: 620px; }
+.status-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 70px; }
+.status-table th, .status-table td { text-align: left; padding: 14px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.status-table th { color: #a8acb7; font: 700 9px var(--display); letter-spacing: 1.5px; }
+.status-table td { color: #b3b7c2; line-height: 1.7; }
+.state-done { color: var(--green); font-weight: 700; }
+.state-todo { color: #c9a45b; font-weight: 700; }
+.notice { border: 1px solid rgba(227,72,80,.35); background: rgba(227,72,80,.07); border-radius: 8px; padding: 18px 22px; margin-bottom: 60px; color: #c9ccd4; font-size: 12px; line-height: 1.8; }
+.notice strong { color: #fff; }
+@media (max-width: 850px) { .howto-grid { grid-template-columns: 1fr; } }
+@media (max-width: 650px) { .status-table th:nth-child(3), .status-table td:nth-child(3) { display: none; } }

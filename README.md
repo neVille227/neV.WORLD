@@ -16,12 +16,14 @@ neV.WORLD est l’écosystème principal. **neV.ID est un module interne** charg
 - `index.html` — portail public.
 - `style.css` — identité visuelle et mise en page responsive.
 - `script.js` — navigation mobile et mise à jour de l’année.
-- `modules/neV.ID/` — documentation et conception du module d’identité.
+- `compte.html` — page publique qui présente neV.ID et son état d’avancement.
+- `modules/neV.ID/` — documentation et application du module d’identité.
 
 Les applications restent autonomes pour leurs fonctionnalités et leurs données métier. Le partage d’identité sera ajouté progressivement, après validation de l’architecture et des migrations.
 
 ## Documentation
 
+- [Guide : à quoi sert le site et comment l'utiliser](GUIDE.md)
 - [Architecture globale](ARCHITECTURE.md)
 - [Module neV.ID](modules/neV.ID/README.md)
 
