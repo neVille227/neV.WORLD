@@ -180,19 +180,15 @@ async function loadProjects() {
 // Rendu côté serveur des cartes projets à partir de projects.json.
 function renderProjectCards(projects) {
   return projects.map((p) => {
-    const link = p.url
-      ? `<a class="card-link" href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(p.linkLabel)} <span>↗</span></a>`
-      : `<span class="card-link card-link-muted">${escapeHtml(p.linkLabel)}</span>`;
-    return `        <article class="project-card ${escapeHtml(p.id)}-card">
-          <div class="card-topline"><span class="project-index">${escapeHtml(p.index)} / ${escapeHtml(p.domain)}</span><span class="card-status status-${escapeHtml(p.status)}"><i></i> ${escapeHtml(p.statusLabel)}</span></div>
-          <div class="project-emblem emblem-${escapeHtml(p.id)}"><span>${escapeHtml(p.emblem)}</span><i></i></div>
-          <h3>${escapeHtml(p.name)}</h3>
-          <p>${escapeHtml(p.description)}</p>
-          <div class="card-bottom"><span class="card-category">${escapeHtml(p.category)}</span>${link}</div>
-        </article>`;
-  }).join("\n\n");
+    return \`        <article class="project-card \${escapeHtml(p.id)}-card">
+          <div class="card-topline"><span class="project-index">\${escapeHtml(p.index)} / \${escapeHtml(p.domain)}</span><span class="card-status status-\${escapeHtml(p.status)}"><i></i> \${escapeHtml(p.statusLabel)}</span></div>
+          <div class="project-emblem emblem-\${escapeHtml(p.id)}"><span>\${escapeHtml(p.emblem)}</span><i></i></div>
+          <h3>\${escapeHtml(p.name)}</h3>
+          <p>\${escapeHtml(p.description)}</p>
+          <div class="card-bottom"><span class="card-category">\${escapeHtml(p.category)}</span><a class="card-link" href="/projets/\${encodeURIComponent(p.id)}">Explorer <span>↗</span></a></div>
+        </article>\`;
+  }).join("\\n\\n");
 }
-
 
 function renderProjectPage(project) {
   const externalAction = project.url
@@ -237,7 +233,7 @@ function renderProjectPage(project) {
 \nasync function servePortal(request, response, fileName) {
   try {
     let body = await readFile(path.join(portalDirectory, fileName));
-    if (fileName === "index.html") {
+    if (fileName === "index.html" || fileName === "explorer.html") {
       const cards = renderProjectCards(await loadProjects());
       const html = body.toString("utf-8").replace(
         /<!--projects:start-->[\s\S]*?<!--projects:end-->/,
@@ -360,8 +356,23 @@ const server = createServer(async (request, response) => {
     return;
   }
 
-  const projectMatch = requestUrl.pathname.match(/^\\/projets\\/([a-z0-9-]+)\\/?$/i);
-  if (projectMatch) {\n    try {\n      const projects = await loadProjects();\n      const project = projects.find((item) => item.id === projectMatch[1]);\n      if (!project) { sendJson(response, 404, { error: "PROJECT_NOT_FOUND" }); return; }\n      const html = renderProjectPage(project);\n      setSecurityHeaders(response);\n      response.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache" });\n      response.end(method === "HEAD" ? undefined : html);\n    } catch { sendJson(response, 500, { error: "PROJECT_UNAVAILABLE" }); }\n    return;\n  }\n\n  const portalFile = portalFiles[requestUrl.pathname];\n  if (portalFile) {
+  const projectMatch = requestUrl.pathname.match(/^\/projets\/([a-z0-9-]+)\/?$/i);
+  if (projectMatch) {
+    try {
+      const projects = await loadProjects();
+      const project = projects.find((item) => item.id === projectMatch[1]);
+      if (!project) { sendJson(response, 404, { error: "PROJECT_NOT_FOUND" }); return; }
+      const html = renderProjectPage(project);
+      setSecurityHeaders(response);
+      response.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache" });
+      response.end(method === "HEAD" ? undefined : html);
+    } catch {
+      sendJson(response, 500, { error: "PROJECT_UNAVAILABLE" });
+    }
+    return;
+  }
+
+  const portalFile = portalFiles[requestUrl.pathname];\n  if (portalFile) {
     await servePortal(request, response, portalFile);
     return;
   }
