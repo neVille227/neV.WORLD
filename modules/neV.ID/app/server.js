@@ -11,6 +11,9 @@ const portalDirectory = path.resolve(currentDirectory, "../../..");
 const portalFiles = {
   "/": "index.html",
   "/index.html": "index.html",
+  "/explorer": "explorer.html",
+  "/explorer/": "explorer.html",
+  "/explorer.html": "explorer.html",
   "/compte.html": "compte.html",
   "/style.css": "style.css",
   "/script.js": "script.js",
@@ -177,23 +180,60 @@ async function loadProjects() {
 // Rendu côté serveur des cartes projets à partir de projects.json.
 function renderProjectCards(projects) {
   return projects.map((p) => {
-    const link = p.url
-      ? `<a class="card-link" href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(p.linkLabel)} <span>↗</span></a>`
-      : `<span class="card-link card-link-muted">${escapeHtml(p.linkLabel)}</span>`;
-    return `        <article class="project-card ${escapeHtml(p.id)}-card">
-          <div class="card-topline"><span class="project-index">${escapeHtml(p.index)} / ${escapeHtml(p.domain)}</span><span class="card-status status-${escapeHtml(p.status)}"><i></i> ${escapeHtml(p.statusLabel)}</span></div>
-          <div class="project-emblem emblem-${escapeHtml(p.id)}"><span>${escapeHtml(p.emblem)}</span><i></i></div>
-          <h3>${escapeHtml(p.name)}</h3>
-          <p>${escapeHtml(p.description)}</p>
-          <div class="card-bottom"><span class="card-category">${escapeHtml(p.category)}</span>${link}</div>
-        </article>`;
+    const id = escapeHtml(p.id);
+    return '<article class="project-card ' + id + '-card">' +
+      '<div class="card-topline"><span class="project-index">' + escapeHtml(p.index) + ' / ' + escapeHtml(p.domain) + '</span><span class="card-status status-' + escapeHtml(p.status) + '"><i></i> ' + escapeHtml(p.statusLabel) + '</span></div>' +
+      '<div class="project-emblem emblem-' + id + '"><span>' + escapeHtml(p.emblem) + '</span><i></i></div>' +
+      '<h3>' + escapeHtml(p.name) + '</h3>' +
+      '<p>' + escapeHtml(p.description) + '</p>' +
+      '<div class="card-bottom"><span class="card-category">' + escapeHtml(p.category) + '</span><a class="card-link" href="/projets/' + encodeURIComponent(p.id) + '">Explorer <span>↗</span></a></div>' +
+      '</article>';
   }).join("\n\n");
 }
-
-async function servePortal(request, response, fileName) {
+function renderProjectPage(project) {
+  const externalAction = project.url
+    ? `<a class="button button-primary" href="${escapeHtml(project.url)}" target="_blank" rel="noopener noreferrer">Accéder au projet <span aria-hidden="true">↗</span></a>`
+    : `<span class="button button-outline" aria-disabled="true">${escapeHtml(project.linkLabel)}</span>`;
+  return `<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08090d">
+  <meta name="description" content="${escapeHtml(project.description)}">
+  <title>${escapeHtml(project.name)} — neV.WORLD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css"><script src="/script.js" defer></script>
+</head>
+<body class="explorer-page">
+  <header class="site-header">
+    <a class="brand" href="/explorer" aria-label="neV.WORLD, Explorer"><span class="brand-mark">neV<span>.</span></span><span class="brand-world">WORLD</span></a>
+    <button class="menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span></button>
+    <nav class="primary-nav" id="primary-nav" aria-label="Navigation principale"><a href="/explorer" class="nav-link">Explorer</a><a href="/compte.html" class="nav-link">neV.ID</a></nav>
+    <div class="header-actions"><a class="button button-outline button-small" href="/explorer">Retour à Explorer <span aria-hidden="true">←</span></a></div>
+  </header>
+  <main>
+    <section class="project-detail section-wrap">
+      <a class="project-back" href="/explorer"><span aria-hidden="true">←</span> TOUS LES PROJETS</a>
+      <div class="project-detail-emblem">${escapeHtml(project.emblem)}</div>
+      <div class="eyebrow" style="margin-top:34px"><span class="eyebrow-line"></span> ${escapeHtml(project.domain)} / ${escapeHtml(project.index)}</div>
+      <h1>${escapeHtml(project.name)}<br><span>Un univers à part entière.</span></h1>
+      <p class="project-detail-lead">${escapeHtml(project.description)}</p>
+      <div class="project-detail-meta">
+        <span>CATÉGORIE — ${escapeHtml(project.category)}</span>
+        <span>ÉTAT — ${escapeHtml(project.statusLabel)}</span>
+      </div>
+      <div class="project-detail-actions">${externalAction}<a class="button button-outline" href="/explorer">Continuer l'exploration <span aria-hidden="true">→</span></a></div>
+    </section>
+  </main>
+  <footer class="site-footer"><a class="brand footer-brand" href="/explorer"><span class="brand-mark">neV<span>.</span></span><span class="brand-world">WORLD</span></a><p>Un écosystème en construction.</p><span class="footer-copy">© <span id="current-year">2026</span> neV.WORLD</span></footer>
+</body>
+</html>`;
+}
+\nasync function servePortal(request, response, fileName) {
   try {
     let body = await readFile(path.join(portalDirectory, fileName));
-    if (fileName === "index.html") {
+    if (fileName === "index.html" || fileName === "explorer.html") {
       const cards = renderProjectCards(await loadProjects());
       const html = body.toString("utf-8").replace(
         /<!--projects:start-->[\s\S]*?<!--projects:end-->/,
@@ -313,6 +353,22 @@ const server = createServer(async (request, response) => {
 
   if (method !== "GET" && method !== "HEAD") {
     sendJson(response, 405, { error: "METHOD_NOT_ALLOWED" });
+    return;
+  }
+
+  const projectMatch = requestUrl.pathname.match(/^\/projets\/([a-z0-9-]+)\/?$/i);
+  if (projectMatch) {
+    try {
+      const projects = await loadProjects();
+      const project = projects.find((item) => item.id === projectMatch[1]);
+      if (!project) { sendJson(response, 404, { error: "PROJECT_NOT_FOUND" }); return; }
+      const html = renderProjectPage(project);
+      setSecurityHeaders(response);
+      response.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache" });
+      response.end(method === "HEAD" ? undefined : html);
+    } catch {
+      sendJson(response, 500, { error: "PROJECT_UNAVAILABLE" });
+    }
     return;
   }
 
