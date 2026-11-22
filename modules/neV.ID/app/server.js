@@ -180,16 +180,16 @@ async function loadProjects() {
 // Rendu côté serveur des cartes projets à partir de projects.json.
 function renderProjectCards(projects) {
   return projects.map((p) => {
-    return \`        <article class="project-card \${escapeHtml(p.id)}-card">
-          <div class="card-topline"><span class="project-index">\${escapeHtml(p.index)} / \${escapeHtml(p.domain)}</span><span class="card-status status-\${escapeHtml(p.status)}"><i></i> \${escapeHtml(p.statusLabel)}</span></div>
-          <div class="project-emblem emblem-\${escapeHtml(p.id)}"><span>\${escapeHtml(p.emblem)}</span><i></i></div>
-          <h3>\${escapeHtml(p.name)}</h3>
-          <p>\${escapeHtml(p.description)}</p>
-          <div class="card-bottom"><span class="card-category">\${escapeHtml(p.category)}</span><a class="card-link" href="/projets/\${encodeURIComponent(p.id)}">Explorer <span>↗</span></a></div>
-        </article>\`;
+    const id = escapeHtml(p.id);
+    return '<article class="project-card ' + id + '-card">' +
+      '<div class="card-topline"><span class="project-index">' + escapeHtml(p.index) + ' / ' + escapeHtml(p.domain) + '</span><span class="card-status status-' + escapeHtml(p.status) + '"><i></i> ' + escapeHtml(p.statusLabel) + '</span></div>' +
+      '<div class="project-emblem emblem-' + id + '"><span>' + escapeHtml(p.emblem) + '</span><i></i></div>' +
+      '<h3>' + escapeHtml(p.name) + '</h3>' +
+      '<p>' + escapeHtml(p.description) + '</p>' +
+      '<div class="card-bottom"><span class="card-category">' + escapeHtml(p.category) + '</span><a class="card-link" href="/projets/' + encodeURIComponent(p.id) + '">Explorer <span>↗</span></a></div>' +
+      '</article>';
   }).join("\\n\\n");
 }
-
 function renderProjectPage(project) {
   const externalAction = project.url
     ? `<a class="button button-primary" href="${escapeHtml(project.url)}" target="_blank" rel="noopener noreferrer">Accéder au projet <span aria-hidden="true">↗</span></a>`
@@ -372,7 +372,8 @@ const server = createServer(async (request, response) => {
     return;
   }
 
-  const portalFile = portalFiles[requestUrl.pathname];\n  if (portalFile) {
+  const portalFile = portalFiles[requestUrl.pathname];
+  if (portalFile) {
     await servePortal(request, response, portalFile);
     return;
   }
