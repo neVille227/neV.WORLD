@@ -39,3 +39,4 @@ Document de coordination entre le fondateur et les assistants IA qui travaillent
 | 2026-11-22 | Aucun site statique dans les projets | neVill_e |
 | 2026-11-22 | neV.ID fusionné dans neV.WORLD, adresse unique | neVill_e |
 | 2026-11-22 | Claude coordinateur technique ; neVill_e décideur final | neVill_e |
+| 2026-11-22 | Direction centrale d'administration et de cybersécurité (voir `docs/ADMINISTRATION-CENTRALE.md`) | neVill_e |
