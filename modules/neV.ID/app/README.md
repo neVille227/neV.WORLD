@@ -99,9 +99,19 @@ npm run test:smoke
 
 Ce test vérifie la disponibilité, le fallback SPA, les méthodes de l'API et le comportement sûr lorsque Clerk n'est pas configuré.
 
-## 5. Déploiement ultérieur sur Render
+## 5. Prévisualisation Render disponible
 
-Après compilation et tests locaux, un nouveau service Render pourra être créé sans remplacer le portail principal :
+Un service de prévisualisation gratuit existe déjà, isolé du portail et des applications principales :
+
+- URL : https://nev-id-preview.onrender.com
+- Service Render : `nev-id-preview`
+- Branche suivie : `feat/integrate-nev-id-module`
+- État : service déclaré `live`, build et démarrage confirmés dans Render.
+- Mode : configuration en attente ; aucune clé Clerk n'est encore configurée.
+
+Cette URL sert à vérifier la page de préparation et le serveur. Les fonctions d'authentification réelles ne sont pas activées.
+
+Pour une future configuration de service avec une instance Clerk, un service Render Web Service distinct pourra être utilisé sans remplacer le portail principal :
 
 - Type : Web Service.
 - Root Directory : `modules/neV.ID/app`.
@@ -114,4 +124,4 @@ Ce service ne doit pas être déployé sur les domaines définitifs tant que le 
 
 ## État actuel
 
-Le code est présent sur la branche de travail GitHub. L'installation des dépendances, le contrôle syntaxique et la compilation de production ont réussi dans GitHub Actions. La création de l'application Clerk, la configuration locale des clés, les essais réels d'inscription/connexion/profil et le déploiement Render restent à faire. Aucun compte Clerk, aucune clé réelle et aucun compte d'utilisateur n'ont été créés dans le dépôt.
+Le service de prévisualisation Render est en ligne sur https://nev-id-preview.onrender.com, mais Clerk n'est pas encore configuré. Le code est présent sur la branche de travail GitHub. L'installation des dépendances, le contrôle syntaxique et la compilation de production ont réussi dans GitHub Actions. La création de l'application Clerk, la configuration locale et serveur des clés, les essais réels d'inscription/connexion/profil et le déploiement de production restent à faire. Aucun compte Clerk, aucune clé réelle et aucun compte d'utilisateur n'ont été créés dans le dépôt. Le service Render de prévisualisation utilise les paramètres de préparation sans authentification.
