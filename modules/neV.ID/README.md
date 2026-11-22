@@ -1,6 +1,6 @@
 # neV.ID — Module interne de neV.WORLD
 
-**Statut :** première base technique créée — configuration Clerk et tests réels à effectuer  
+**Statut :** application de prévisualisation déployée — configuration Clerk et tests réels à effectuer  
 **Nature :** module transversal intégré au dépôt principal  
 **Fournisseur d'identité retenu :** Clerk
 
@@ -41,7 +41,8 @@ neV.ID fournit une identité de connexion commune aux applications de neV.WORLD.
 - Aucune clé réelle n'est enregistrée dans Git.
 - L'installation des dépendances, la vérification de syntaxe JavaScript et la compilation de production ont réussi dans GitHub Actions sur une première révision. Le test HTTP de fumée est désormais ajouté au contrôle continu et doit encore passer sur la dernière révision.
 - La connexion réelle avec Clerk, le test du profil, la déconnexion réelle et la propagation de session entre applications restent à vérifier.
-- Aucun déploiement Render n'a été effectué.
+- Prévisualisation Render : https://nev-id-preview.onrender.com (service gratuit isolé, sans clés Clerk).
+- Le service Render a réussi le build et démarre le serveur Node. La page reste en mode configuration tant que Clerk n'est pas configuré.
 
 ## Lancement local
 
