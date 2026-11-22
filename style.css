@@ -366,3 +366,15 @@ h1 span, h2 span {
 @media (prefers-reduced-motion: reduce) {
   .intro-symbol, .intro-world, .intro-tagline, .intro-rule span, .intro-center, .project-card, .explorer-heading, .explorer-hero, .explorer-note { animation: none !important; transition: none !important; opacity: 1 !important; filter: none !important; transform: none !important; }
 }
+
+
+.page-leaving main {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .24s ease, transform .24s ease;
+}
+.page-leaving .site-header,
+.page-leaving .site-footer {
+  opacity: 0;
+  transition: opacity .2s ease;
+}
