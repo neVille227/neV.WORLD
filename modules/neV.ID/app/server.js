@@ -188,7 +188,7 @@ function renderProjectCards(projects) {
       '<p>' + escapeHtml(p.description) + '</p>' +
       '<div class="card-bottom"><span class="card-category">' + escapeHtml(p.category) + '</span><a class="card-link" href="/projets/' + encodeURIComponent(p.id) + '">Explorer <span>↗</span></a></div>' +
       '</article>';
-  }).join("\\n\\n");
+  }).join("\n\n");
 }
 function renderProjectPage(project) {
   const externalAction = project.url
