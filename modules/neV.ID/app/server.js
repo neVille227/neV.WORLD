@@ -3,20 +3,19 @@ import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createClerkClient } from "@clerk/backend";
+import { createAdmin } from "./admin.js";
+import { renderExplorer, renderIntro, renderProject } from "./portal-pages.js";
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const buildDirectory = path.join(currentDirectory, "dist");
 // Le portail neV.WORLD (fichiers statiques à la racine du dépôt) est servi sur la même adresse que neV.ID.
 const portalDirectory = path.resolve(currentDirectory, "../../..");
 const portalFiles = {
-  "/": "index.html",
-  "/index.html": "index.html",
-  "/explorer": "explorer.html",
-  "/explorer/": "explorer.html",
-  "/explorer.html": "explorer.html",
   "/compte.html": "compte.html",
   "/style.css": "style.css",
   "/script.js": "script.js",
+  "/portal.css": "portal.css",
+  "/portal.js": "portal.js",
 };
 const port = Number(process.env.PORT) || 3000;
 
@@ -46,6 +45,27 @@ const mimeTypes = {
   ".jpeg": "image/jpeg",
   ".woff2": "font/woff2",
 };
+
+const PORTAL_CSP = [
+  "default-src 'self'",
+  "script-src 'self'",
+  "style-src 'self' https://fonts.googleapis.com",
+  "font-src https://fonts.gstatic.com",
+  "img-src 'self' data:",
+  "connect-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+].join("; ");
+
+function setPortalHeaders(response, request) {
+  setSecurityHeaders(response);
+  response.setHeader("Content-Security-Policy", PORTAL_CSP);
+  if (String(request.headers["x-forwarded-proto"] || "").split(",")[0] === "https") {
+    response.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+  }
+}
 
 function setSecurityHeaders(response) {
   response.setHeader("X-Content-Type-Options", "nosniff");
@@ -123,6 +143,72 @@ function toWebRequest(incomingRequest) {
   });
 }
 
+// Vérifie la session Clerk et renvoie l'identifiant de l'utilisateur, ou null.
+async function authenticate(request) {
+  if (!clerkClient || authorizedParties.length === 0) return { error: 503 };
+  try {
+    const authState = await clerkClient.authenticateRequest(toWebRequest(request), { authorizedParties });
+    if (!authState.isAuthenticated) return { error: 401 };
+    return { userId: authState.toAuth().userId };
+  } catch {
+    return { error: 401 };
+  }
+}
+
+const adminEmails = (process.env.NEV_ADMIN_EMAILS || "")
+  .split(",")
+  .map((email) => email.trim().toLowerCase())
+  .filter(Boolean);
+
+const admin = createAdmin({
+  dataDir: process.env.NEV_DATA_DIR || path.join(currentDirectory, "data"),
+  loadProjects: () => loadProjects(),
+  selfBaseUrl: () => `http://127.0.0.1:${port}`,
+});
+
+async function handleAdminOverview(request, response) {
+  if (adminEmails.length === 0) {
+    sendJson(response, 503, { error: "ADMIN_NOT_CONFIGURED", message: "Aucun administrateur n'est configuré sur le serveur." });
+    return;
+  }
+  const auth = await authenticate(request);
+  if (auth.error) {
+    sendJson(response, auth.error, { error: auth.error === 401 ? "UNAUTHENTICATED" : "AUTH_NOT_CONFIGURED" });
+    return;
+  }
+  try {
+    const user = await clerkClient.users.getUser(auth.userId);
+    const primary = user.emailAddresses.find((e) => e.id === user.primaryEmailAddressId);
+    const email = primary?.emailAddress?.toLowerCase() || "";
+    const verified = primary?.verification?.status === "verified";
+    if (!verified || !adminEmails.includes(email)) {
+      admin.log("accès refusé", "Tentative d'accès à l'administration");
+      sendJson(response, 403, { error: "FORBIDDEN", message: "Ce compte n'a pas accès à l'administration." });
+      return;
+    }
+    sendJson(response, 200, await admin.overview({ clerk: clerkClient, adminLabel: email.replace(/^(.).*@/, "$1•••@") }));
+  } catch {
+    admin.recordError();
+    sendJson(response, 500, { error: "ADMIN_UNAVAILABLE" });
+  }
+}
+
+// Limitation de débit simple en mémoire (par adresse, fenêtre d'une minute).
+const hits = new Map();
+function rateLimited(request, limit) {
+  const ip = String(request.headers["x-forwarded-for"] || request.socket.remoteAddress || "").split(",")[0].trim();
+  const minute = Math.floor(Date.now() / 60000);
+  const key = `${ip}|${limit}`;
+  const entry = hits.get(key);
+  if (!entry || entry.minute !== minute) {
+    hits.set(key, { minute, n: 1 });
+    if (hits.size > 5000) for (const [k, v] of hits) if (v.minute !== minute) hits.delete(k);
+    return false;
+  }
+  entry.n += 1;
+  return entry.n > limit;
+}
+
 async function handleMe(request, response) {
   if (!clerkClient) {
     sendJson(response, 503, {
@@ -169,83 +255,24 @@ async function handleMe(request, response) {
   }
 }
 
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-}
-
 async function loadProjects() {
   return JSON.parse(await readFile(path.join(portalDirectory, "projects.json"), "utf-8"));
 }
 
-// Rendu côté serveur des cartes projets à partir de projects.json.
-function renderProjectCards(projects) {
-  return projects.map((p) => {
-    const id = escapeHtml(p.id);
-    return '<article class="project-card ' + id + '-card">' +
-      '<div class="card-topline"><span class="project-index">' + escapeHtml(p.index) + ' / ' + escapeHtml(p.domain) + '</span><span class="card-status status-' + escapeHtml(p.status) + '"><i></i> ' + escapeHtml(p.statusLabel) + '</span></div>' +
-      '<div class="project-emblem emblem-' + id + '"><span>' + escapeHtml(p.emblem) + '</span><i></i></div>' +
-      '<h3>' + escapeHtml(p.name) + '</h3>' +
-      '<p>' + escapeHtml(p.description) + '</p>' +
-      '<div class="card-bottom"><span class="card-category">' + escapeHtml(p.category) + '</span><a class="card-link" href="/projets/' + encodeURIComponent(p.id) + '">Explorer <span>↗</span></a></div>' +
-      '</article>';
-  }).join("\n\n");
+function sendHtml(request, response, html) {
+  setPortalHeaders(response, request);
+  response.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache" });
+  response.end(request.method === "HEAD" ? undefined : html);
 }
-function renderProjectPage(project) {
-  const externalAction = project.url
-    ? `<a class="button button-primary" href="${escapeHtml(project.url)}" target="_blank" rel="noopener noreferrer">Accéder au projet <span aria-hidden="true">↗</span></a>`
-    : `<span class="button button-outline" aria-disabled="true">${escapeHtml(project.linkLabel)}</span>`;
-  return `<!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#08090d">
-  <meta name="description" content="${escapeHtml(project.description)}">
-  <title>${escapeHtml(project.name)} — neV.WORLD</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css"><script src="/script.js" defer></script>
-</head>
-<body class="explorer-page">
-  <header class="site-header">
-    <a class="brand" href="/explorer" aria-label="neV.WORLD, Explorer"><span class="brand-mark">neV<span>.</span></span><span class="brand-world">WORLD</span></a>
-    <button class="menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span></button>
-    <nav class="primary-nav" id="primary-nav" aria-label="Navigation principale"><a href="/explorer" class="nav-link">Explorer</a><a href="/compte.html" class="nav-link">neV.ID</a></nav>
-    <div class="header-actions"><a class="button button-outline button-small" href="/explorer">Retour à Explorer <span aria-hidden="true">←</span></a></div>
-  </header>
-  <main>
-    <section class="project-detail section-wrap">
-      <a class="project-back" href="/explorer"><span aria-hidden="true">←</span> TOUS LES PROJETS</a>
-      <div class="project-detail-emblem">${escapeHtml(project.emblem)}</div>
-      <div class="eyebrow" style="margin-top:34px"><span class="eyebrow-line"></span> ${escapeHtml(project.domain)} / ${escapeHtml(project.index)}</div>
-      <h1>${escapeHtml(project.name)}<br><span>Un univers à part entière.</span></h1>
-      <p class="project-detail-lead">${escapeHtml(project.description)}</p>
-      <div class="project-detail-meta">
-        <span>CATÉGORIE — ${escapeHtml(project.category)}</span>
-        <span>ÉTAT — ${escapeHtml(project.statusLabel)}</span>
-      </div>
-      <div class="project-detail-actions">${externalAction}<a class="button button-outline" href="/explorer">Continuer l'exploration <span aria-hidden="true">→</span></a></div>
-    </section>
-  </main>
-  <footer class="site-footer"><a class="brand footer-brand" href="/explorer"><span class="brand-mark">neV<span>.</span></span><span class="brand-world">WORLD</span></a><p>Un écosystème en construction.</p><span class="footer-copy">© <span id="current-year">2026</span> neV.WORLD</span></footer>
-</body>
-</html>`;
-}
+
 async function servePortal(request, response, fileName) {
   try {
-    let body = await readFile(path.join(portalDirectory, fileName));
-    if (fileName === "index.html" || fileName === "explorer.html") {
-      const cards = renderProjectCards(await loadProjects());
-      const html = body.toString("utf-8").replace(
-        /<!--projects:start-->[\s\S]*?<!--projects:end-->/,
-        () => cards,
-      );
-      body = Buffer.from(html, "utf-8");
-    }
+    const body = await readFile(path.join(portalDirectory, fileName));
     const contentType = mimeTypes[path.extname(fileName).toLowerCase()] || "application/octet-stream";
-    setSecurityHeaders(response);
+    setPortalHeaders(response, request);
     response.writeHead(200, {
       "Content-Type": contentType,
-      "Cache-Control": fileName.endsWith(".html") ? "no-cache" : "public, max-age=3600",
+      "Cache-Control": fileName.endsWith(".html") ? "no-cache" : "public, max-age=300",
     });
     response.end(request.method === "HEAD" ? undefined : body);
   } catch {
@@ -335,6 +362,24 @@ const server = createServer(async (request, response) => {
     return;
   }
 
+  if (requestUrl.pathname.startsWith("/api/") && rateLimited(request, 120)) {
+    sendJson(response, 429, { error: "TOO_MANY_REQUESTS" });
+    return;
+  }
+
+  if (requestUrl.pathname === "/api/admin/overview") {
+    if (method !== "POST") {
+      sendJson(response, 405, { error: "METHOD_NOT_ALLOWED" });
+      return;
+    }
+    if (rateLimited(request, 30)) {
+      sendJson(response, 429, { error: "TOO_MANY_REQUESTS" });
+      return;
+    }
+    await handleAdminOverview(request, response);
+    return;
+  }
+
   if (requestUrl.pathname === "/api/me") {
     // POST ensures browsers send the Origin header that Clerk validates.
     if (method !== "POST") {
@@ -356,17 +401,27 @@ const server = createServer(async (request, response) => {
     return;
   }
 
-  const projectMatch = requestUrl.pathname.match(/^\/projets\/([a-z0-9-]+)\/?$/i);
+  const pagePath = requestUrl.pathname.replace(/\/+$/, "") || "/";
+
+  if (pagePath === "/" || pagePath === "/explorer") {
+    admin.recordView(pagePath);
+    sendHtml(request, response, pagePath === "/" ? renderIntro() : renderExplorer(await loadProjects()));
+    return;
+  }
+
+  const projectMatch = pagePath.match(/^\/projets\/([a-z0-9-]+)$/i);
   if (projectMatch) {
     try {
       const projects = await loadProjects();
       const project = projects.find((item) => item.id === projectMatch[1]);
-      if (!project) { sendJson(response, 404, { error: "PROJECT_NOT_FOUND" }); return; }
-      const html = renderProjectPage(project);
-      setSecurityHeaders(response);
-      response.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache" });
-      response.end(method === "HEAD" ? undefined : html);
+      if (!project) {
+        sendJson(response, 404, { error: "PROJECT_NOT_FOUND" });
+        return;
+      }
+      admin.recordView(pagePath);
+      sendHtml(request, response, renderProject(project, projects));
     } catch {
+      admin.recordError();
       sendJson(response, 500, { error: "PROJECT_UNAVAILABLE" });
     }
     return;
@@ -374,6 +429,7 @@ const server = createServer(async (request, response) => {
 
   const portalFile = portalFiles[requestUrl.pathname];
   if (portalFile) {
+    if (portalFile === "compte.html") admin.recordView("/compte.html");
     await servePortal(request, response, portalFile);
     return;
   }

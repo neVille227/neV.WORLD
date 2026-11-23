@@ -3,52 +3,325 @@
     "id": "booster",
     "index": "01",
     "domain": "BIEN-ÊTRE",
+    "kind": "project",
     "status": "live",
     "statusLabel": "EN LIGNE",
     "emblem": "nB",
     "name": "neV.BOOSTER",
+    "accent": "#c0283a",
+    "tagline": "Booste ton quotidien.",
     "description": "Des impulsions simples pour dynamiser le quotidien grâce à des activités courtes et accessibles.",
     "category": "Bien-être & habitudes",
     "url": "https://nevbooster.onrender.com/",
-    "linkLabel": "Ouvrir le projet"
+    "linkLabel": "Ouvrir le projet",
+    "about": [
+      "neV.BOOSTER est une plateforme qui transforme l'envie de bouger en habitude : chaque jour, un tirage de cartes propose un exercice ou une séance adaptée à la personne.",
+      "L'esprit du projet : des efforts courts, un suivi motivant et une progression que chacun mène à son rythme."
+    ],
+    "planned": [
+      "Une bibliothèque d'exercices de plus en plus riche, avec des conseils (sommeil, alimentation).",
+      "Des mécanismes de motivation : séries de connexion, badges, classement.",
+      "Un espace d'administration pour créer des combinaisons et enrichir le contenu."
+    ],
+    "howto": [
+      "Créer un compte et renseigner son niveau.",
+      "Tirer la carte du jour.",
+      "Réaliser l'exercice proposé et valider sa séance.",
+      "Revenir chaque jour pour entretenir sa progression."
+    ],
+    "milestones": [
+      {
+        "label": "Conception validée",
+        "state": "done"
+      },
+      {
+        "label": "Plateforme en ligne",
+        "state": "done"
+      },
+      {
+        "label": "Enrichissement du contenu",
+        "state": "current"
+      },
+      {
+        "label": "Administration et communauté",
+        "state": "todo"
+      }
+    ]
   },
   {
     "id": "manga",
     "index": "02",
     "domain": "CRÉATION",
+    "kind": "project",
     "status": "live",
     "statusLabel": "EN LIGNE",
     "emblem": "漫",
     "name": "neV.MANGA",
+    "accent": "#e5484d",
+    "tagline": "Les histoires prennent forme.",
     "description": "Un studio de création dédié à des récits originaux, des univers construits et des personnages marquants.",
     "category": "Création & narration",
     "url": "https://nevmanga.onrender.com/",
-    "linkLabel": "Ouvrir le projet"
+    "linkLabel": "Ouvrir le projet",
+    "about": [
+      "neV.MANGA est le studio qui construit des histoires originales, de l'idée jusqu'aux pages finalisées.",
+      "Sa première œuvre, PROJECT: BEYOND, se déroule sur Néréth, un monde bouleversé par l'Éveil, où cinq États adaptent leurs sociétés à l'apparition de manifestations surnaturelles."
+    ],
+    "planned": [
+      "Le récit complet, les histoires de chaque pays et les illustrations originales.",
+      "Des chapitres publiés lorsque les pages seront produites et validées."
+    ],
+    "howto": [
+      "Ouvrir le site et parcourir l'univers de BEYOND.",
+      "Découvrir les personnages, les familles, les États et les sagas.",
+      "Suivre la chronologie du récit."
+    ],
+    "milestones": [
+      {
+        "label": "Univers structuré",
+        "state": "done"
+      },
+      {
+        "label": "Site immersif en ligne",
+        "state": "done"
+      },
+      {
+        "label": "Récit et illustrations",
+        "state": "current"
+      },
+      {
+        "label": "Chapitres publiés",
+        "state": "todo"
+      }
+    ]
   },
   {
     "id": "nexus",
     "index": "03",
     "domain": "IMPACT",
+    "kind": "project",
     "status": "progress",
     "statusLabel": "PILOTE PRIVÉ",
     "emblem": "NX",
     "name": "neV.NEXUS",
+    "accent": "#2f7df6",
+    "tagline": "Connecting People, Creating Opportunities.",
     "description": "Une initiative tournée vers la mise en relation des personnes et la création d’opportunités.",
     "category": "Connexion & opportunités",
     "url": null,
-    "linkLabel": "Accès encadré"
+    "linkLabel": "Accès encadré",
+    "about": [
+      "neV.NEXUS vise à relier les personnes, les organisations et les opportunités autour de trois piliers : vivre, progresser, contribuer.",
+      "Le projet avance en pilote privé, avec une première zone d'étude au Bénin. Aucun partenariat n'est présenté comme confirmé sans accord écrit."
+    ],
+    "planned": [
+      "Des modules de recherche, d'entraide, d'opportunités et d'apprentissage.",
+      "Une ouverture progressive, après étude, partenariats et tests."
+    ],
+    "howto": [
+      "L'accès est encadré pendant la phase pilote.",
+      "Les personnes invitées créent leur compte et rejoignent le pilote."
+    ],
+    "milestones": [
+      {
+        "label": "Cadrage et principes",
+        "state": "done"
+      },
+      {
+        "label": "Pilote privé",
+        "state": "current"
+      },
+      {
+        "label": "Partenariats formalisés",
+        "state": "todo"
+      },
+      {
+        "label": "Ouverture élargie",
+        "state": "todo"
+      }
+    ]
   },
   {
     "id": "nehodo",
     "index": "04",
     "domain": "CONCEPTION",
+    "kind": "project",
     "status": "progress",
-    "statusLabel": "EN DÉVELOPPEMENT",
+    "statusLabel": "EN CONCEPTION",
     "emblem": "N.",
     "name": "NEHODO.22",
+    "accent": "#9b5cff",
+    "tagline": "Imaginer l'espace. Construire la vision.",
     "description": "Un espace consacré à la conception architecturale et à la mise en valeur de projets de construction.",
     "category": "Architecture & conception",
     "url": null,
-    "linkLabel": "Bientôt disponible"
+    "linkLabel": "Bientôt disponible",
+    "about": [
+      "NEHODO.22 est un espace où consulter des plans de villas, classés par catégories (RDC, R+1, R+2 et au-delà), avec pour chaque plan plusieurs vues : plan, plan coté, plan aménagé, façades, perspective.",
+      "Le projet est en phase de conception : l'identité visuelle se précise et la maquette du site est en préparation."
+    ],
+    "planned": [
+      "Un catalogue de plans consultable et un accès par abonnement.",
+      "Une page de plans sur mesure et un espace pour proposer des idées.",
+      "Un outil d'administration pour ajouter soi-même les plans."
+    ],
+    "howto": [
+      "Choisir une catégorie de plans.",
+      "Consulter les vues disponibles d'un plan.",
+      "Accéder aux contenus avancés selon l'abonnement choisi."
+    ],
+    "milestones": [
+      {
+        "label": "Identité visuelle",
+        "state": "done"
+      },
+      {
+        "label": "Maquette du site",
+        "state": "current"
+      },
+      {
+        "label": "Catalogue de plans",
+        "state": "todo"
+      },
+      {
+        "label": "Abonnements et paiement",
+        "state": "todo"
+      }
+    ]
+  },
+  {
+    "id": "commerce",
+    "index": "05",
+    "domain": "BOUTIQUE",
+    "kind": "project",
+    "status": "progress",
+    "statusLabel": "FONDATION",
+    "emblem": "C.",
+    "name": "neV.COMMERCE",
+    "accent": "#1fb88a",
+    "tagline": "Des marques. Des univers. Une boutique.",
+    "description": "L'espace commercial de l'écosystème, destiné à réunir les marques nées des différents projets.",
+    "category": "Marques & boutique",
+    "url": null,
+    "linkLabel": "Pas encore ouvert",
+    "about": [
+      "neV.COMMERCE sera l'espace commercial central de l'écosystème : une vitrine de marques, chacune issue d'un projet et fidèle à son identité.",
+      "Aujourd'hui, le projet est au stade de la fondation : aucune boutique n'est ouverte, aucun produit, prix ni paiement n'est proposé."
+    ],
+    "planned": [
+      "Des marques validées projet par projet, avec leurs collections.",
+      "Fiches produits, panier et commandes, avec calculs vérifiés côté serveur.",
+      "Paiement et livraison, après validation technique et juridique."
+    ],
+    "howto": [
+      "Rien n'est achetable aujourd'hui.",
+      "Le parcours cible : découvrir une marque, consulter les produits, passer commande en toute sécurité."
+    ],
+    "milestones": [
+      {
+        "label": "Fondation du projet",
+        "state": "done"
+      },
+      {
+        "label": "Marque pilote",
+        "state": "current"
+      },
+      {
+        "label": "Catalogue et panier",
+        "state": "todo"
+      },
+      {
+        "label": "Paiement et ouverture",
+        "state": "todo"
+      }
+    ]
+  },
+  {
+    "id": "game",
+    "index": "06",
+    "domain": "JEU",
+    "kind": "project",
+    "status": "planned",
+    "statusLabel": "À CADRER",
+    "emblem": "G.",
+    "name": "neV.GAME",
+    "accent": "#f2b134",
+    "tagline": "Un univers à jouer.",
+    "description": "Un futur projet de jeu au sein de l'écosystème, dont le périmètre reste à définir.",
+    "category": "Jeu & divertissement",
+    "url": null,
+    "linkLabel": "À venir",
+    "about": [
+      "neV.GAME est prévu dans l'écosystème, mais son concept, son public et son architecture ne sont pas encore définis.",
+      "Rien ne sera créé avant la validation de son périmètre par le fondateur."
+    ],
+    "planned": [
+      "Définition du concept et du public visé.",
+      "Choix de l'architecture technique."
+    ],
+    "howto": [
+      "Le projet n'est pas encore ouvert."
+    ],
+    "milestones": [
+      {
+        "label": "Cadrage du concept",
+        "state": "current"
+      },
+      {
+        "label": "Conception",
+        "state": "todo"
+      },
+      {
+        "label": "Développement",
+        "state": "todo"
+      }
+    ]
+  },
+  {
+    "id": "id",
+    "index": "TR",
+    "domain": "MODULE TRANSVERSAL",
+    "kind": "module",
+    "status": "progress",
+    "statusLabel": "PRÉVERSION",
+    "emblem": "ID",
+    "name": "neV.ID",
+    "accent": "#e53945",
+    "tagline": "Un compte. Tous les projets neV.",
+    "description": "Le compte unique de l'écosystème : une seule identité pour accéder aux projets compatibles.",
+    "category": "Identité & accès",
+    "url": "/compte.html",
+    "linkLabel": "Découvrir neV.ID",
+    "about": [
+      "neV.ID est le module transversal qui permet de créer un compte une seule fois et de s'identifier dans les projets compatibles.",
+      "Il fonctionne aujourd'hui en préversion (environnement de développement) ; la production demande un domaine commun."
+    ],
+    "planned": [
+      "Un compte reconnu par tous les projets, sous un domaine commun.",
+      "Des rôles et accès distincts par projet.",
+      "L'administration centrale de l'écosystème."
+    ],
+    "howto": [
+      "Cliquer sur « Créer mon compte ».",
+      "Se connecter, puis revenir automatiquement sur neV.WORLD."
+    ],
+    "milestones": [
+      {
+        "label": "Interface de compte",
+        "state": "done"
+      },
+      {
+        "label": "Connexion en préversion",
+        "state": "done"
+      },
+      {
+        "label": "Domaine et production",
+        "state": "todo"
+      },
+      {
+        "label": "Compte unique entre projets",
+        "state": "todo"
+      }
+    ]
   }
 ]

@@ -286,7 +286,19 @@ async function start() {
     ? "signUp"
     : requestedPath === "/profile"
       ? "profile"
-      : "signIn";
+      : requestedPath === "/admin"
+        ? "admin"
+        : "signIn";
+
+  if (page === "admin") {
+    if (!clerk.isSignedIn) {
+      window.location.replace("/sign-in?redirect_url=%2Fadmin");
+      return;
+    }
+    const { renderAdmin } = await import("./admin.js");
+    await renderAdmin(app, clerk);
+    return;
+  }
 
   if (clerk.isSignedIn && page !== "profile") {
     window.location.replace(returnUrl || "/profile");
