@@ -5,7 +5,7 @@ export function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
-const FONTS = "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap";
+const FONTS = "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap";
 
 function accentClass(project) {
   return `accent-${escapeHtml(project.id)}`;
@@ -22,6 +22,7 @@ function layout({ title, description, bodyClass, content, path }) {
   <title>${escapeHtml(title)}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="${FONTS}" rel="stylesheet">
+  <link rel="icon" href="/logos/world-icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/portal.css">
   <script src="/portal.js" defer></script>
 </head>
@@ -31,11 +32,20 @@ ${content}
 </html>`;
 }
 
+function logo3d(size) {
+  return `<div class="logo3d logo3d-${size}" data-logo3d aria-hidden="true"><div class="logo3d-sway"><div class="logo3d-tilt">
+      <img class="l3 l3-back" src="/logos/world-orbit-back.svg" alt="" width="800" height="480">
+      <img class="l3 l3-planet" src="/logos/world-planet.svg" alt="" width="800" height="480">
+      <img class="l3 l3-mark" src="/logos/world-mark.svg" alt="" width="800" height="480">
+      <img class="l3 l3-front" src="/logos/world-orbit-front.svg" alt="" width="800" height="480">
+    </div></div></div>`;
+}
+
 function header(active) {
   const link = (href, label, key) =>
     `<a href="${href}" class="nav-link${active === key ? " active" : ""}">${label}</a>`;
   return `<header class="site-header">
-    <a class="brand" href="/explorer" aria-label="neV.WORLD, Explorer"><span class="brand-mark">neV<span>.</span></span><span class="brand-world">WORLD</span></a>
+    <a class="brand" href="/explorer" aria-label="neV.WORLD, Explorer"><img class="brand-icon" src="/logos/world-icon.svg" alt="" width="36" height="36"><span class="brand-word">neV<span>.</span>WORLD</span></a>
     <button class="menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span></button>
     <nav class="primary-nav" id="primary-nav" aria-label="Navigation principale">
       ${link("/", "Accueil", "home")}${link("/explorer", "Explorer", "explorer")}${link("/compte.html", "neV.ID", "id")}
@@ -49,7 +59,7 @@ function header(active) {
 
 function footer() {
   return `<footer class="site-footer">
-    <a class="brand footer-brand" href="/explorer"><span class="brand-mark">neV<span>.</span></span><span class="brand-world">WORLD</span></a>
+    <a class="brand footer-brand" href="/explorer"><img class="brand-icon" src="/logos/world-icon.svg" alt="" width="36" height="36"><span class="brand-word">neV<span>.</span>WORLD</span></a>
     <p>Un écosystème en construction.</p>
     <span class="footer-copy">© <span id="current-year">2026</span> neV.WORLD</span>
   </footer>`;
@@ -58,14 +68,9 @@ function footer() {
 export function renderIntro() {
   const content = `<canvas id="stars" aria-hidden="true"></canvas>
   <main class="intro-stage">
-    <div class="logo-back" aria-hidden="true"><span>n</span><span>e</span><span>V</span><span class="dot">.</span></div>
-    <div class="planet" aria-hidden="true">
-      <div class="planet-ring ring-back"></div>
-      <div class="planet-body"><div class="planet-surface"></div><div class="planet-clouds"></div><div class="planet-shade"></div></div>
-      <div class="planet-ring ring-front"></div>
-    </div>
-    <h1 class="visually-hidden">neV.WORLD</h1>
-    <p class="intro-tag">UN ÉCOSYSTÈME <span>·</span> PLUSIEURS AMBITIONS</p>
+    ${logo3d("hero")}
+    <h1 class="wordmark" aria-label="neV.WORLD"><span>neV</span><span class="dot">.</span><span>WORLD</span></h1>
+    <p class="intro-tag">PLUS QU'UN PROJET <span>·</span> UNE VISION</p>
     <div class="intro-actions">
       <a class="explore-button" href="/explorer" id="explore-button"><span>Explorer</span><i aria-hidden="true">↓</i></a>
       <a class="intro-skip" href="/explorer">Passer l'animation</a>
@@ -104,17 +109,25 @@ export function renderExplorer(projects) {
       </a>`).join("");
   const content = `${header("explorer")}
   <main>
-    <section class="explorer-hero section-wrap">
-      <div class="hero-orb" aria-hidden="true"></div>
-      <div class="eyebrow" data-reveal><span class="eyebrow-line"></span> BIENVENUE DANS L'ÉCOSYSTÈME</div>
-      <h1 data-reveal>Explorez<br><span>neV.WORLD.</span></h1>
-      <p class="explorer-lead" data-reveal>Une identité commune, des univers singuliers. Choisissez un projet pour découvrir sa vocation, son état d'avancement et la façon de l'utiliser.</p>
-      <a class="explore-cue" href="#projets" data-reveal><span class="cue-line"></span> DÉCOUVRIR LES PROJETS <span aria-hidden="true">↓</span></a>
+    <section class="explorer-hero">
+      <div class="hero-bg" aria-hidden="true"><i class="bg-grid"></i><i class="bg-glow g1"></i><i class="bg-glow g2"></i></div>
+      ${logo3d("sm")}
+      <div class="hero-chip" data-reveal><i></i> ÉCOSYSTÈME <b>·</b> IDENTITÉ <b>·</b> PROJETS</div>
+      <h1 class="hero-title" data-reveal>Bienvenue dans<br><span class="grad">neV.WORLD</span></h1>
+      <p class="hero-sub" data-reveal>Une identité commune, des univers singuliers.<br><em>Choisissez un projet et entrez dans son monde.</em></p>
+      <div class="hero-cta" data-reveal><a class="button button-primary button-large" href="#projets">Explorer les projets <span aria-hidden="true">↓</span></a><a class="button button-outline button-large" href="/sign-up?redirect_url=%2Fexplorer">Créer mon compte neV.ID</a></div>
+      <p class="hero-caption" data-reveal><span></span> Plus qu'un projet. Une vision. <span></span></p>
+    </section>
+    <section class="stats-band section-wrap" data-reveal aria-label="L'écosystème en chiffres">
+      <div><b>${projects.length}</b><span>univers réunis</span></div>
+      <div><b>1</b><span>compte unique neV.ID</span></div>
+      <div><b>1</b><span>administration centrale</span></div>
     </section>
     <section class="explorer-projects section-wrap" id="projets">
       <div class="section-heading" data-reveal>
-        <div><div class="eyebrow"><span class="eyebrow-line"></span> LES UNIVERS neV</div><h2>Chaque projet<br><span>a son propre espace.</span></h2></div>
-        <p>Les ${main.length} projets de l'écosystème sont réunis ici, alignés. Un clic ouvre la page dédiée du projet.</p>
+        <div class="eyebrow"><span class="eyebrow-line"></span> LES UNIVERS neV <span class="eyebrow-line"></span></div>
+        <h2>Chaque projet<br><span>a son propre espace.</span></h2>
+        <p>Les ${main.length} projets de l'écosystème sont réunis ici. Un clic ouvre la page dédiée du projet.</p>
       </div>
       <div class="project-grid">
       ${cards}
@@ -124,7 +137,7 @@ export function renderExplorer(projects) {
     <section class="explorer-note section-wrap" data-reveal>
       <span class="eyebrow"><span class="eyebrow-line"></span> L'ESPRIT neV.WORLD</span>
       <p>Des projets autonomes.<br><span>Une vision qui les relie.</span></p>
-      <a href="/compte.html" class="text-link">Découvrir neV.ID <span>↗</span></a>
+      <div class="note-actions"><a class="button button-primary" href="/sign-up?redirect_url=%2Fexplorer">Créer mon compte <span aria-hidden="true">→</span></a><a href="/compte.html" class="text-link">Découvrir neV.ID <span>↗</span></a></div>
     </section>
   </main>
   ${footer()}`;

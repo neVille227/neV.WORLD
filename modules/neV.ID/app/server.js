@@ -427,7 +427,7 @@ const server = createServer(async (request, response) => {
     return;
   }
 
-  if (/^\/logos\/[a-z0-9-]+\.webp$/.test(requestUrl.pathname)) {
+  if (/^\/logos\/[a-z0-9-]+\.(webp|svg)$/.test(requestUrl.pathname)) {
     await servePortal(request, response, requestUrl.pathname.slice(1));
     return;
   }
