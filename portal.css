@@ -187,7 +187,7 @@ h2 span { color: #70737f; }
 
 /* Accents propres à chaque projet */
 .accent-booster { --accent: #c0283a; } .accent-manga { --accent: #e5484d; } .accent-nexus { --accent: #2f7df6; }
-.accent-nehodo { --accent: #9b5cff; } .accent-commerce { --accent: #1fb88a; } .accent-game { --accent: #f2b134; } .accent-id { --accent: #e53945; }
+.accent-nehodo { --accent: #9b5cff; } .accent-commerce { --accent: #8b5cf6; } .accent-game { --accent: #3b9dff; } .accent-securite { --accent: #e5303f; } .accent-id { --accent: #e53945; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
@@ -196,3 +196,13 @@ h2 span { color: #70737f; }
 }
 
 html, body { overflow-x: clip; }
+
+/* Logos des projets */
+.card-logo { position: relative; aspect-ratio: 16 / 10; border-radius: 1rem; overflow: hidden; background: #000; border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); box-shadow: 0 1rem 2.4rem -1.2rem var(--accent); }
+.card-logo img { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.project-card:hover .card-logo img { transform: scale(1.05); }
+.module-logo { width: 4.2rem; height: 3.2rem; flex: none; border-radius: .7rem; overflow: hidden; background: #000; border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); }
+.module-logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.hero-logo { position: relative; width: min(34rem, 86vw); aspect-ratio: 16 / 10; margin-bottom: 1.2rem; border-radius: 1.4rem; overflow: hidden; background: #000; border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); box-shadow: 0 2.4rem 7rem -2rem var(--accent); animation: breathe 7s ease-in-out infinite alternate; }
+.hero-logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+@media (prefers-reduced-motion: reduce) { .hero-logo { animation: none; } }

@@ -46,7 +46,8 @@
         "label": "Administration et communauté",
         "state": "todo"
       }
-    ]
+    ],
+    "logo": "/logos/booster.webp"
   },
   {
     "id": "manga",
@@ -93,7 +94,8 @@
         "label": "Chapitres publiés",
         "state": "todo"
       }
-    ]
+    ],
+    "logo": "/logos/manga.webp"
   },
   {
     "id": "nexus",
@@ -139,7 +141,8 @@
         "label": "Ouverture élargie",
         "state": "todo"
       }
-    ]
+    ],
+    "logo": "/logos/nexus.webp"
   },
   {
     "id": "nehodo",
@@ -187,7 +190,8 @@
         "label": "Abonnements et paiement",
         "state": "todo"
       }
-    ]
+    ],
+    "logo": "/logos/nehodo.webp"
   },
   {
     "id": "commerce",
@@ -198,7 +202,7 @@
     "statusLabel": "FONDATION",
     "emblem": "C.",
     "name": "neV.COMMERCE",
-    "accent": "#1fb88a",
+    "accent": "#8b5cf6",
     "tagline": "Des marques. Des univers. Une boutique.",
     "description": "L'espace commercial de l'écosystème, destiné à réunir les marques nées des différents projets.",
     "category": "Marques & boutique",
@@ -234,7 +238,8 @@
         "label": "Paiement et ouverture",
         "state": "todo"
       }
-    ]
+    ],
+    "logo": "/logos/commerce.webp"
   },
   {
     "id": "game",
@@ -244,8 +249,8 @@
     "status": "planned",
     "statusLabel": "À CADRER",
     "emblem": "G.",
-    "name": "neV.GAME",
-    "accent": "#f2b134",
+    "name": "neV.GAMES",
+    "accent": "#3b9dff",
     "tagline": "Un univers à jouer.",
     "description": "Un futur projet de jeu au sein de l'écosystème, dont le périmètre reste à définir.",
     "category": "Jeu & divertissement",
@@ -275,7 +280,8 @@
         "label": "Développement",
         "state": "todo"
       }
-    ]
+    ],
+    "logo": "/logos/game.webp"
   },
   {
     "id": "id",
@@ -320,6 +326,55 @@
       },
       {
         "label": "Compte unique entre projets",
+        "state": "todo"
+      }
+    ],
+    "logo": "/logos/id.webp"
+  },
+  {
+    "id": "securite",
+    "index": "TR",
+    "domain": "MODULE TRANSVERSAL",
+    "kind": "module",
+    "status": "progress",
+    "statusLabel": "EN CADRAGE",
+    "emblem": "SC",
+    "name": "neV.SÉCURITÉ",
+    "accent": "#e5303f",
+    "logo": "/logos/securite.webp",
+    "tagline": "Protéger. Sécuriser. Anticiper.",
+    "description": "La direction de la cybersécurité de l'écosystème : vérifier, surveiller et corriger, projet par projet.",
+    "category": "Cybersécurité",
+    "url": "",
+    "linkLabel": "Bientôt disponible",
+    "about": [
+      "neV.SÉCURITÉ est la fonction centrale qui contrôle la sécurité de tous les projets neV : audits, corrections, surveillance et rapports.",
+      "Un projet n'est jamais déclaré « sécurisé » sans vérification technique effective."
+    ],
+    "planned": [
+      "Audits réguliers de chaque projet et rapport à la direction.",
+      "Surveillance de la disponibilité et des erreurs depuis l'administration centrale.",
+      "Suivi des correctifs, des clés et des accès."
+    ],
+    "howto": [
+      "Les statuts de sécurité apparaîtront dans l'administration centrale.",
+      "Les rapports sont publiés dans le dépôt neV.WORLD (dossier docs)."
+    ],
+    "milestones": [
+      {
+        "label": "Charte de cybersécurité",
+        "state": "done"
+      },
+      {
+        "label": "Audit initial",
+        "state": "done"
+      },
+      {
+        "label": "Correctifs prioritaires",
+        "state": "progress"
+      },
+      {
+        "label": "Tableau de sécurité central",
         "state": "todo"
       }
     ]
