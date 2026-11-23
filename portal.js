@@ -56,6 +56,17 @@
     });
   }
 
+  // Logo 3D : suit le curseur (désactivé si mouvement réduit)
+  const logo = document.querySelector('[data-logo3d]');
+  if (logo && !reduced && window.matchMedia('(hover: hover)').matches) {
+    const tilt = logo.querySelector('.logo3d-tilt');
+    window.addEventListener('pointermove', (e) => {
+      const x = e.clientX / window.innerWidth - 0.5, y = e.clientY / window.innerHeight - 0.5;
+      tilt.style.setProperty('--ry', (x * 26).toFixed(2) + 'deg');
+      tilt.style.setProperty('--rx', (-y * 18).toFixed(2) + 'deg');
+    }, { passive: true });
+  }
+
   // Parallaxe douce de l'emblème sur la page projet
   const parallax = document.querySelector('[data-parallax]');
   if (parallax && !reduced) {
