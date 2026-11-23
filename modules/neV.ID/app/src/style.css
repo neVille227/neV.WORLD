@@ -405,3 +405,37 @@ html, body { max-width: 100%; overflow-x: hidden; }
   .profile-layout .intro-panel { text-align: left; }
   .profile-layout .intro-panel .eyebrow, .profile-layout .ecosystem-note { justify-content: flex-start; }
 }
+
+/* ===== Administration centrale ===== */
+.adm-wrap { width: min(80rem, 100% - 2.4rem); margin: 0 auto; padding: 2.4rem 0 4rem; }
+.adm-top { display: flex; justify-content: space-between; align-items: end; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+.adm-eyebrow { margin: 0 0 .5rem; font-size: .7rem; font-weight: 700; letter-spacing: .22em; color: var(--muted); }
+.adm-top h1 { margin: 0; font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing: -.04em; }
+.adm-top h1 span, .adm-h2 { color: #8a8d99; }
+.adm-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+.adm-btn { min-height: 44px; display: inline-flex; align-items: center; padding: 0 1.2rem; border-radius: 999px; border: 1px solid var(--red); background: var(--red); color: #fff; font-weight: 700; cursor: pointer; }
+.adm-btn-ghost { background: transparent; border-color: var(--line); }
+.adm-kpis { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .8rem; margin-bottom: 1rem; }
+.adm-kpi { display: grid; gap: .3rem; padding: 1rem 1.1rem; border: 1px solid var(--line); border-radius: .9rem; background: var(--panel); }
+.adm-kpi small { color: var(--muted); font-size: .75rem; } .adm-kpi b { font-size: 1.7rem; letter-spacing: -.03em; } .adm-kpi span { color: #6f7280; font-size: .7rem; }
+.adm-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+.adm-grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 2rem 0 1rem; }
+.adm-card { padding: 1.2rem 1.3rem; border: 1px solid var(--line); border-radius: 1rem; background: var(--panel); min-width: 0; }
+.adm-card h2, .adm-h2 { margin: 0 0 1rem; font-size: .95rem; letter-spacing: -.01em; }
+.adm-chart { width: 100%; height: auto; display: block; }
+.adm-bar { fill: var(--red); opacity: .85; } .adm-bar:hover { opacity: 1; }
+.adm-axis { stroke: rgba(255,255,255,.14); } .adm-axis-label { fill: #6f7280; font-size: 10px; }
+.adm-projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 1rem; }
+.adm-project { --accent: var(--red); display: grid; gap: .8rem; padding: 1.1rem 1.2rem; border: 1px solid var(--line); border-radius: 1rem; background: var(--panel); border-top: 2px solid var(--accent); }
+.adm-project header { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; } .adm-project h3 { margin: 0; font-size: 1.05rem; }
+.adm-dot { width: .6rem; height: .6rem; border-radius: 50%; background: var(--accent); }
+.adm-project dl { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin: 0; } .adm-project dt { font-size: .68rem; color: #6f7280; } .adm-project dd { margin: .1rem 0 0; font-weight: 700; font-size: .9rem; }
+.adm-pill { margin-left: auto; padding: .15rem .6rem; border-radius: 999px; font-size: .68rem; font-weight: 700; }
+.adm-pill-ok { background: rgba(123,214,164,.14); color: var(--green); } .adm-pill-bad { background: rgba(229,57,69,.18); color: var(--red-bright); }
+.adm-pill-off, .adm-pill-wait { background: rgba(255,255,255,.07); color: var(--muted); }
+.adm-spark-row { display: flex; align-items: center; gap: .6rem; } .adm-spark { width: 7.5rem; height: 1.9rem; stroke: var(--green); } .adm-spark.has-down { stroke: #e0b25a; }
+.adm-progress { height: .4rem; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; } .adm-progress-bar { display: block; height: 100%; width: 0; background: var(--accent); transition: width .8s ease; }
+.adm-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; } .adm-list li { display: flex; justify-content: space-between; gap: 1rem; font-size: .85rem; padding-bottom: .5rem; border-bottom: 1px solid var(--line); } .adm-list b { color: #d4d6dd; font-weight: 600; white-space: nowrap; }
+.adm-muted { color: var(--muted); font-size: .85rem; } .adm-foot { margin-top: 1.4rem; color: #6f7280; font-size: .78rem; line-height: 1.6; }
+@media (max-width: 1100px) { .adm-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } .adm-grid-3 { grid-template-columns: 1fr; } }
+@media (max-width: 700px) { .adm-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .adm-grid-2 { grid-template-columns: 1fr; } }
