@@ -85,7 +85,7 @@ function projectCard(project, position) {
   return `<article class="project-card ${accentClass(project)}" data-reveal data-i="${position}">
         <div class="card-glow" aria-hidden="true"></div>
         <div class="card-topline"><span class="project-index">${escapeHtml(project.index)} / ${escapeHtml(project.domain)}</span><span class="card-status status-${escapeHtml(project.status)}"><i></i> ${escapeHtml(project.statusLabel)}</span></div>
-        <div class="project-emblem"><span>${escapeHtml(project.emblem)}</span><i></i></div>
+        ${project.logo ? `<div class="card-logo"><img src="${escapeHtml(project.logo)}" alt="Logo ${escapeHtml(project.name)}" loading="lazy" decoding="async"></div>` : `<div class="project-emblem"><span>${escapeHtml(project.emblem)}</span><i></i></div>`}
         <h3>${escapeHtml(project.name)}</h3>
         <p class="card-tagline">${escapeHtml(project.tagline)}</p>
         <p>${escapeHtml(project.description)}</p>
@@ -98,7 +98,7 @@ export function renderExplorer(projects) {
   const modules = projects.filter((p) => p.kind === "module");
   const cards = main.map((p, i) => projectCard(p, i)).join("\n      ");
   const moduleStrip = modules.map((m) => `<a class="module-strip ${accentClass(m)}" href="/projets/${encodeURIComponent(m.id)}" data-reveal>
-        <span class="module-emblem">${escapeHtml(m.emblem)}</span>
+        ${m.logo ? `<span class="module-logo"><img src="${escapeHtml(m.logo)}" alt="Logo ${escapeHtml(m.name)}" loading="lazy" decoding="async"></span>` : `<span class="module-emblem">${escapeHtml(m.emblem)}</span>`}
         <span class="module-text"><b>${escapeHtml(m.name)} — ${escapeHtml(m.domain)}</b><small>${escapeHtml(m.tagline)}</small></span>
         <span class="module-go" aria-hidden="true">→</span>
       </a>`).join("");
@@ -156,7 +156,7 @@ export function renderProject(project, projects) {
     <section class="project-hero">
       <div class="hero-orb" aria-hidden="true"></div>
       <a class="project-back" href="/explorer"><span aria-hidden="true">←</span> TOUS LES PROJETS</a>
-      <div class="project-hero-emblem" data-parallax="0.18"><span>${escapeHtml(project.emblem)}</span><i></i><b></b></div>
+      ${project.logo ? `<div class="hero-logo" data-parallax="0.18"><img src="${escapeHtml(project.logo)}" alt="Logo ${escapeHtml(project.name)}" decoding="async"></div>` : `<div class="project-hero-emblem" data-parallax="0.18"><span>${escapeHtml(project.emblem)}</span><i></i><b></b></div>`}
       <div class="eyebrow" data-reveal><span class="eyebrow-line"></span> ${escapeHtml(project.domain)} / ${escapeHtml(project.index)}</div>
       <h1 data-reveal>${escapeHtml(project.name)}</h1>
       <p class="project-tagline" data-reveal>${escapeHtml(project.tagline)}</p>

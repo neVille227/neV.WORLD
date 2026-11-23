@@ -427,6 +427,11 @@ const server = createServer(async (request, response) => {
     return;
   }
 
+  if (/^\/logos\/[a-z0-9-]+\.webp$/.test(requestUrl.pathname)) {
+    await servePortal(request, response, requestUrl.pathname.slice(1));
+    return;
+  }
+
   const portalFile = portalFiles[requestUrl.pathname];
   if (portalFile) {
     if (portalFile === "compte.html") admin.recordView("/compte.html");
